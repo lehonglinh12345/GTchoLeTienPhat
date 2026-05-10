@@ -136,7 +136,65 @@ export default function Footer() {
           <p className="text-[10px] text-neutral-600 uppercase tracking-[0.2em] font-bold">
             © 2026 3COVANGOC STUDIO. MADE BY PASSION.
           </p>
-          
+         <div className="flex flex-col items-center gap-3 text-center md:-translate-x-8 lg:-translate-x-12">
+  
+  <span className="text-neutral-700 text-[10px] uppercase tracking-[0.3em]">
+    Crafted & Developed by
+  </span>
+
+  {/* Developer Name */}
+  <div
+    className="
+      text-transparent bg-clip-text
+      bg-gradient-to-r from-red-500 via-white to-red-700
+      font-black tracking-[0.4em]
+      text-xs
+      drop-shadow-[0_0_10px_rgba(255,0,0,0.35)]
+      animate-pulse
+    "
+  >
+    LEHONGLINH
+  </div>
+
+  {/* Developer Links */}
+  <div className="flex items-center justify-center gap-6 flex-wrap">
+
+    <a
+      href="https://www.facebook.com/re.hon.rin.2025"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="
+        text-[10px]
+        uppercase
+        tracking-[0.3em]
+        text-white/40
+        hover:text-studio-red
+        transition-all duration-300
+        hover:-translate-y-1
+      "
+    >
+      Facebook
+    </a>
+
+    <a
+      href="https://lehonglinh.vercel.app/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="
+        text-[10px]
+        uppercase
+        tracking-[0.3em]
+        text-white/40
+        hover:text-studio-gold
+        transition-all duration-300
+        hover:-translate-y-1
+      "
+    >
+      Portfolio
+    </a>
+
+  </div>
+</div>
           <button 
             onClick={scrollToTop}
             className="group flex items-center gap-3 text-[10px] text-neutral-400 uppercase tracking-widest font-bold hover:text-studio-gold transition-all"
