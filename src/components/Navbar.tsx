@@ -1,0 +1,139 @@
+import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { cn } from '../lib/utils';
+import { Menu, X } from 'lucide-react';
+
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+
+      // Detect current section in view
+      const sections = ['home', 'about', 'services', 'projects', 'team', 'contact'];
+      const scrollPosition = window.scrollY + 120;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const height = element.offsetHeight;
+
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + height) {
+            setActiveSection(section);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const navLinks = [
+    { name: 'Trang Chủ', id: 'home' },
+    { name: 'Giới Thiệu', id: 'about' },
+    { name: 'Dịch Vụ', id: 'services' },
+    { name: 'Dự Án', id: 'projects' },
+    { name: 'Thành Viên', id: 'team' },
+    { name: 'Liên Hệ', id: 'contact' },
+  ];
+
+  return (
+    <>
+      <motion.nav
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+        className={cn(
+          "fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 px-6 lg:px-12 flex justify-between items-center",
+          scrolled || isOpen ? "bg-studio-black/80 backdrop-blur-md py-4 border-b border-white/5" : "bg-transparent shadow-none"
+        )}
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-10 h-10 border-2 border-studio-red flex items-center justify-center rotate-45 shrink-0">
+            <span className="-rotate-45 font-bold text-studio-red text-xl">3C</span>
+          </div>
+          <span className="text-xl font-bold tracking-widest uppercase text-white hidden lg:block">
+            3covangoc Studio
+          </span>
+        </div>
+
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center gap-10">
+          {navLinks.map((link) => (
+            <a
+              key={link.id}
+              href={`#${link.id}`}
+              className={cn(
+                "text-[11px] font-semibold uppercase tracking-[0.3em] transition-all relative py-1",
+                activeSection === link.id ? "text-studio-red" : "text-white/70 hover:text-white"
+              )}
+            >
+              {link.name}
+              {activeSection === link.id && (
+                <motion.span 
+                  layoutId="activeNav"
+                  className="absolute -bottom-1 left-0 w-full h-[1.5px] bg-studio-red flex items-center justify-center"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
+            </a>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-4">
+          
+          {/* Mobile Menu Toggle */}
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden text-white cursor-pointer p-2 hover:bg-white/5 rounded-full transition-colors z-[60]"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      </motion.nav>
+
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-0 z-[49] bg-studio-black/85 backdrop-blur-2xl flex flex-col items-center justify-center pt-20 px-6 md:hidden"
+          >
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.65\" numOctaves=\"3\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\"/%3E%3C/svg%3E')" }}></div>
+            
+            <div className="flex flex-col items-center gap-5 relative z-10 w-full">
+              {navLinks.map((link, idx) => (
+                <motion.a
+                  key={link.id}
+                  href={`#${link.id}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.05 * idx }}
+                  onClick={() => setIsOpen(false)}
+                  className={cn(
+                    "text-[11px] font-bold uppercase tracking-[0.5em] transition-colors pb-1 border-b",
+                    activeSection === link.id ? "text-studio-red border-studio-red" : "text-white/60 border-transparent"
+                  )}
+                >
+                  {link.name}
+                </motion.a>
+              ))}
+            </div>
+
+            <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/20 text-xs tracking-widest font-bold uppercase">
+              3COVANGOC STUDIO © 2026
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
