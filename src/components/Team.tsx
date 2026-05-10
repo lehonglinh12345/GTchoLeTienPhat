@@ -3,13 +3,13 @@ import { motion } from 'motion/react';
 const team = [
   {
     name: 'Lê Kim Thơ',
-    role: 'Storyboard & Rendering',
+    role: '2D Designer & Support 3D ',
     image: '/images/lekimtho.png',
     position: 'center',
   },
   {
     name: 'Lê Tiến Phát',
-    role: '3D Modeling & Rigging',
+    role: '3D Modeling & Rendering',
     image: '/images/letienphat.png',
     position: 'top', // Shifts down to show more of the top
   },

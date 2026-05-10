@@ -27,10 +27,26 @@ export default function About() {
             <motion.h3 variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }} className="text-4xl md:text-5xl font-bold mb-8 leading-tight tracking-tighter">
               Chúng tôi là một <span className="text-transparent bg-clip-text bg-gradient-to-r from-studio-red to-studio-wine">Studio Sáng Tạo</span> trẻ với tầm nhìn nghệ thuật độc bản.
             </motion.h3>
-            <motion.p variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }} className="text-neutral-500 text-base leading-relaxed mb-10 border-l border-studio-wine pl-4">
-              3covangoc Studio là nơi những giấc mơ hình ảnh được hiện thực hóa qua ngôn ngữ của 3D và đồ họa chuyển động. 
-              Chúng tôi không chỉ làm hình ảnh, chúng tôi kể những câu chuyện chạm đến cảm xúc.
-            </motion.p>
+          <motion.p
+  variants={{
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  }}
+  className="text-neutral-400 text-base leading-relaxed mb-10 border-l border-studio-wine pl-4"
+>
+  <span
+    className="
+      text-transparent bg-clip-text
+      bg-gradient-to-r from-red-500 via-rose-300 to-red-700
+      font-semibold italic tracking-wide
+      drop-shadow-[0_0_12px_rgba(255,0,0,0.5)]
+    "
+  >
+    3COVANGOC STUDIO
+  </span>{" "}
+  là nơi những giấc mơ hình ảnh được hiện thực hóa qua ngôn ngữ của 3D và đồ họa chuyển động.
+  Chúng tôi không chỉ làm hình ảnh, chúng tôi kể những câu chuyện chạm đến cảm xúc.
+</motion.p>
             
             <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1 } }} className="grid grid-cols-2 gap-6 mt-12">
               <div className="glass-card p-6 rounded-2xl border-white/5">

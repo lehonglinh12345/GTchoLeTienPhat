@@ -54,9 +54,58 @@ export default function Navbar() {
         )}
       >
         <div className="flex items-center gap-4">
-          <div className="w-10 h-10 border-2 border-studio-red flex items-center justify-center rotate-45 shrink-0">
-            <span className="-rotate-45 font-bold text-studio-red text-xl">3C</span>
-          </div>
+         <a
+  href="#home"
+  className="relative w-14 h-14 shrink-0 group cursor-pointer"
+>
+  {/* Glow Background */}
+  <div className="absolute inset-0 rounded-full bg-studio-red/20 blur-2xl group-hover:bg-studio-red/40 transition-all duration-700" />
+
+  {/* Rotating Border */}
+  <div className="absolute inset-0 rounded-full border border-white/10 border-t-studio-red animate-spin [animation-duration:8s]" />
+
+  {/* Pulse Ring */}
+  <div className="absolute inset-0 rounded-full border border-studio-red/20 animate-ping" />
+
+  {/* Logo Container */}
+  <div
+    className="
+      relative w-full h-full rounded-full
+      bg-black/40 backdrop-blur-md
+      border border-white/10
+      flex items-center justify-center
+      overflow-hidden
+      shadow-[0_0_30px_rgba(255,0,0,0.15)]
+      group-hover:scale-110
+      transition-all duration-500
+    "
+  >
+    <img
+      src="/images/logo.png"
+      alt="3covangoc Studio Logo"
+      className="
+        w-10 h-10 object-contain
+        drop-shadow-[0_0_15px_rgba(255,0,0,0.45)]
+        group-hover:rotate-6
+        transition-transform duration-500
+      "
+    />
+
+    {/* Shine Effect */}
+    <div
+      className="
+        absolute inset-0
+        bg-gradient-to-r
+        from-transparent via-white/10 to-transparent
+        -translate-x-full group-hover:translate-x-full
+        transition-transform duration-1000
+      "
+    />
+
+    {/* Inner Glow */}
+    <div className="absolute inset-0 bg-studio-red/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+  </div>
+</a>
           <span className="text-xl font-bold tracking-widest uppercase text-white hidden lg:block">
             3covangoc Studio
           </span>

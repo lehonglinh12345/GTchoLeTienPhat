@@ -23,8 +23,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 bg-[#0A0A0A]">
         <motion.div 
           style={{ y: useTransform(scrollY, [0, 500], [0, 150]) }}
-          className="absolute inset-0 z-0"
-        >
+          className="absolute inset-0 z-0">
           <img 
             src="/images/input_file_1.png" 
             alt="Hero Background" 
