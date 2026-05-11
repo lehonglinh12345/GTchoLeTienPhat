@@ -186,6 +186,18 @@ export default function Hero() {
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-studio-black/80 via-transparent to-transparent opacity-100 xl:opacity-60" />
                 
+                {/* Scanlines */}
+                <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]" />
+
+                {/* Bottom Badge */}
+                <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 right-4 md:right-8">
+                  <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2 text-highlight">
+                    <div className="w-1 md:w-2 h-1 md:h-2 rounded-full bg-studio-red animate-pulse ring-2 ring-studio-red/30" />
+                    <span className="text-[7px] md:text-[10px] text-studio-gold uppercase font-bold tracking-widest bg-studio-gold/10 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(212,175,55,0.3)]">{t.hero.deepProject}</span>
+                  </div>
+                  <h3 className="text-[10px] md:text-xl font-bold text-white uppercase tracking-tighter">TRAILER NHÀ CÓ GIỖ - 3COVANGOC STUDIO</h3>
+                </div>
+                
                 {/* Play Pause */}
                 <motion.button
                   whileHover={{ scale: 1.1 }}

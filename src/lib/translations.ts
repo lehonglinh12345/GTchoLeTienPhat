@@ -21,7 +21,7 @@ export const translations = {
       sendEmail: 'Gửi Email',
       trailer: 'Trailer Phim',
       lab: 'PHÒNG THỬ NGHIỆM 3D',
-      deepProject: 'Dự án chuyên sâu',
+      deepProject: 'Dự án 3D',
       scroll: 'Cuộn xuống',
     },
     about: {
