@@ -1,12 +1,15 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { cn } from '../lib/utils';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Globe } from 'lucide-react';
+import { useLanguage } from '../contexts/LanguageContext';
+import { Language } from '../lib/translations';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,12 +37,18 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: 'Trang Chủ', id: 'home' },
-    { name: 'Giới Thiệu', id: 'about' },
-    { name: 'Dịch Vụ', id: 'services' },
-    { name: 'Dự Án', id: 'projects' },
-    { name: 'Thành Viên', id: 'team' },
-    { name: 'Liên Hệ', id: 'contact' },
+    { name: t.nav.home, id: 'home' },
+    { name: t.nav.about, id: 'about' },
+    { name: t.nav.services, id: 'services' },
+    { name: t.nav.projects, id: 'projects' },
+    { name: t.nav.team, id: 'team' },
+    { name: t.nav.contact, id: 'contact' },
+  ];
+
+  const languages: { code: Language; label: string }[] = [
+    { code: 'vi', label: 'VN' },
+    { code: 'en', label: 'EN' },
+    { code: 'ja', label: 'JP' },
   ];
 
   return (
@@ -54,58 +63,58 @@ export default function Navbar() {
         )}
       >
         <div className="flex items-center gap-4">
-         <a
-  href="#home"
-  className="relative w-14 h-14 shrink-0 group cursor-pointer"
->
-  {/* Glow Background */}
-  <div className="absolute inset-0 rounded-full bg-studio-red/20 blur-2xl group-hover:bg-studio-red/40 transition-all duration-700" />
+          <a
+            href="#home"
+            className="relative w-14 h-14 shrink-0 group cursor-pointer"
+          >
+            {/* Glow Background */}
+            <div className="absolute inset-0 rounded-full bg-studio-red/20 blur-2xl group-hover:bg-studio-red/40 transition-all duration-700" />
 
-  {/* Rotating Border */}
-  <div className="absolute inset-0 rounded-full border border-white/10 border-t-studio-red animate-spin [animation-duration:8s]" />
+            {/* Rotating Border */}
+            <div className="absolute inset-0 rounded-full border border-white/10 border-t-studio-red animate-spin [animation-duration:8s]" />
 
-  {/* Pulse Ring */}
-  <div className="absolute inset-0 rounded-full border border-studio-red/20 animate-ping" />
+            {/* Pulse Ring */}
+            <div className="absolute inset-0 rounded-full border border-studio-red/20 animate-ping" />
 
-  {/* Logo Container */}
-  <div
-    className="
-      relative w-full h-full rounded-full
-      bg-black/40 backdrop-blur-md
-      border border-white/10
-      flex items-center justify-center
-      overflow-hidden
-      shadow-[0_0_30px_rgba(255,0,0,0.15)]
-      group-hover:scale-110
-      transition-all duration-500
-    "
-  >
-    <img
-      src="/images/logo.png"
-      alt="3covangoc Studio Logo"
-      className="
-        w-10 h-10 object-contain
-        drop-shadow-[0_0_15px_rgba(255,0,0,0.45)]
-        group-hover:rotate-6
-        transition-transform duration-500
-      "
-    />
+            {/* Logo Container */}
+            <div
+              className="
+                relative w-full h-full rounded-full
+                bg-black/40 backdrop-blur-md
+                border border-white/10
+                flex items-center justify-center
+                overflow-hidden
+                shadow-[0_0_30px_rgba(255,0,0,0.15)]
+                group-hover:scale-110
+                transition-all duration-500
+              "
+            >
+              <img
+                src="/images/logo.png"
+                alt="3covangoc Studio Logo"
+                className="
+                  w-10 h-10 object-contain
+                  drop-shadow-[0_0_15px_rgba(255,0,0,0.45)]
+                  group-hover:rotate-6
+                  transition-transform duration-500
+                "
+              />
 
-    {/* Shine Effect */}
-    <div
-      className="
-        absolute inset-0
-        bg-gradient-to-r
-        from-transparent via-white/10 to-transparent
-        -translate-x-full group-hover:translate-x-full
-        transition-transform duration-1000
-      "
-    />
+              {/* Shine Effect */}
+              <div
+                className="
+                  absolute inset-0
+                  bg-gradient-to-r
+                  from-transparent via-white/10 to-transparent
+                  -translate-x-full group-hover:translate-x-full
+                  transition-transform duration-1000
+                "
+              />
 
-    {/* Inner Glow */}
-    <div className="absolute inset-0 bg-studio-red/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-  </div>
-</a>
+              {/* Inner Glow */}
+              <div className="absolute inset-0 bg-studio-red/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </div>
+          </a>
           <span className="text-xl font-bold tracking-widest uppercase text-white hidden lg:block">
             3covangoc Studio
           </span>
@@ -135,6 +144,23 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
+          {/* Language Switcher */}
+          <div className="flex items-center bg-white/5 rounded-full p-1 border border-white/10">
+            {languages.map((lang) => (
+              <button
+                key={lang.code}
+                onClick={() => setLanguage(lang.code)}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider transition-all",
+                  language === lang.code 
+                    ? "bg-studio-red text-white shadow-lg shadow-studio-red/20" 
+                    : "text-white/40 hover:text-white/70"
+                )}
+              >
+                {lang.label}
+              </button>
+            ))}
+          </div>
           
           {/* Mobile Menu Toggle */}
           <button 
