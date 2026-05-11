@@ -80,7 +80,7 @@ export const translations = {
         location: 'Vị trí',
         vn: 'Việt Nam',
         tags: 'Lĩnh vực sáng tạo',
-        cta: 'Sáng tạo dự án của bạn',
+        cta: 'Liên hệ với 3COVANGOC STUDIO',
       }
     },
     team: {
