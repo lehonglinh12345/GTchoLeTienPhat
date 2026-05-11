@@ -18,24 +18,15 @@ export default function CustomCursor() {
   }, []);
 
   return (
-    <>
-      <motion.div
-        className="custom-cursor bg-white fixed top-0 left-0 rounded-full z-[10000] pointer-events-none mix-blend-difference hidden lg:block"
-        animate={{
-          x: position.x - 10,
-          y: position.y - 10,
-          scale: isPointer ? 2.5 : 1,
-        }}
-        transition={{ type: 'spring', damping: 30, stiffness: 400, mass: 0.5 }}
-      />
-      <motion.div
-        className="custom-cursor-glow fixed top-0 left-0 pointer-events-none z-[9999] hidden lg:block"
-        animate={{
-          x: position.x - 150,
-          y: position.y - 150,
-        }}
-        transition={{ type: 'spring', damping: 50, stiffness: 200, mass: 1 }}
-      />
-    </>
+    <motion.div
+      className="custom-cursor bg-white fixed top-0 left-0 rounded-full z-[10000] pointer-events-none mix-blend-difference hidden lg:block"
+      animate={{
+        x: position.x - 6,
+        y: position.y - 6,
+        scale: isPointer ? 3 : 1,
+      }}
+      transition={{ type: 'spring', damping: 35, stiffness: 450, mass: 0.1 }}
+      style={{ width: '12px', height: '12px' }}
+    />
   );
 }

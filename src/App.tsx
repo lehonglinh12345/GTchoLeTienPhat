@@ -36,7 +36,6 @@ export default function App() {
         </div>
 
         {/* Visual Overlays */}
-        <div className="noise-overlay" />
         <LoadingScreen />
         <CustomCursor />
         <ScrollToTop />
@@ -52,14 +51,6 @@ export default function App() {
           <Team />
           <Contact />
           <Footer />
-        </div>
-
-        {/* Scrolling Visual Indicator */}
-        <div className="fixed right-4 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-4 z-40">
-          <div className="w-[2px] h-4 bg-studio-red"></div>
-          <div className="w-[2px] h-2 bg-white/20"></div>
-          <div className="w-[2px] h-2 bg-white/20"></div>
-          <div className="w-[2px] h-2 bg-white/20"></div>
         </div>
 
         {/* Background Lighting Effects */}

@@ -52,7 +52,7 @@ export default function ProjectShowcase() {
               transition={{ duration: 1.2, delay: index * 0.1, ease: [0.76, 0, 0.24, 1] }}
               viewport={{ once: true }}
               onClick={() => setSelectedProject(project)}
-              className="group relative cursor-pointer"
+              className="group relative cursor-pointer will-change-transform"
             >
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                 <img 

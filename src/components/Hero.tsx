@@ -243,18 +243,6 @@ export default function Hero() {
                 >
                   {isFullscreen ? <Minimize2 className="w-3.5 h-3.5 md:w-5 md:h-5" /> : <Maximize2 className="w-3.5 h-3.5 md:w-5 md:h-5" />}
                 </motion.button>
-                
-                {/* Scanlines */}
-                <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]" />
-
-                {/* Bottom Badge */}
-                <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 right-4 md:right-8">
-                  <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
-                    <div className="w-1 md:w-2 h-1 md:h-2 rounded-full bg-studio-red animate-pulse" />
-                    <span className="text-[7px] md:text-[10px] text-white/70 md:text-white/50 uppercase font-bold tracking-widest">{t.hero.deepProject}</span>
-                  </div>
-                  <h3 className="text-[10px] md:text-xl font-bold text-white uppercase tracking-tighter">TRAILER NHÀ CÓ GIỖ - 3COVANGOC STUDIO</h3>
-                </div>
               </div>
 
               {/* Decorative Corner Elements */}
@@ -268,10 +256,9 @@ export default function Hero() {
       {/* Scroll indicator */}
       <motion.div 
         style={{ opacity }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <span className="text-white/30 text-[10px] uppercase tracking-[0.4em] font-medium">{t.hero.scroll}</span>
-        <div className="h-20 w-px bg-gradient-to-b from-studio-gold/50 to-transparent" />
+        <div className="h-12 w-px bg-gradient-to-b from-studio-gold to-transparent" />
       </motion.div>
     </section>
   );

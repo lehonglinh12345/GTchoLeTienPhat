@@ -50,14 +50,14 @@ export default function About() {
               {t.about.desc.includes('3covangoc Studio') ? t.about.desc.replace('3covangoc Studio', '').trim() : t.about.desc}
             </motion.p>
             
-            <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1 } }} className="grid grid-cols-2 gap-6 mt-12">
-              <div className="glass-card p-6 rounded-2xl border-white/5">
-                <h3 className="text-3xl font-bold text-studio-gold mb-2">100%</h3>
-                <p className="text-white/50 text-sm uppercase tracking-wider">{t.about.creative}</p>
+            <motion.div variants={{ hidden: { opacity: 0, scale: 0.95 }, visible: { opacity: 1, scale: 1 } }} className="grid grid-cols-2 gap-4 md:gap-6 mt-8 md:mt-12">
+              <div className="glass-card p-4 md:p-6 rounded-2xl border-white/5">
+                <h3 className="text-2xl md:text-3xl font-bold text-studio-gold mb-2">100%</h3>
+                <p className="text-white/50 text-[10px] md:text-sm uppercase tracking-wider">{t.about.creative}</p>
               </div>
-              <div className="glass-card p-6 rounded-2xl border-white/5">
-                <h3 className="text-3xl font-bold text-studio-gold mb-2">24/7</h3>
-                <p className="text-white/50 text-sm uppercase tracking-wider">{t.about.support}</p>
+              <div className="glass-card p-4 md:p-6 rounded-2xl border-white/5">
+                <h3 className="text-2xl md:text-3xl font-bold text-studio-gold mb-2">24/7</h3>
+                <p className="text-white/50 text-[10px] md:text-sm uppercase tracking-wider">{t.about.support}</p>
               </div>
             </motion.div>
           </motion.div>
@@ -70,7 +70,7 @@ export default function About() {
             className="relative aspect-square md:aspect-[4/5] rounded-3xl overflow-hidden group"
           >
             <img 
-              src="/images/input_file_1.png" 
+              src="/images/input_file_2.png" 
               alt="Creative workspace" 
               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
               referrerPolicy="no-referrer"
