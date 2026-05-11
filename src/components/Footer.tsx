@@ -124,6 +124,10 @@ export default function Footer() {
                   <a href="https://www.youtube.com/@3CoVaNgocStudio" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold">
                     YouTube
                   </a>
+                  
+                  <a href="https://www.tiktok.com/@3covangoc.studio" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold">
+                    TikTok
+                  </a>
 
                 </div>
               </div>

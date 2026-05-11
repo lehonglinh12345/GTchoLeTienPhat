@@ -337,7 +337,7 @@ export default function Hero() {
                   </div>
 
                   <h3 className="text-[10px] md:text-xl font-bold text-white uppercase tracking-tighter">
-                    PHÒNG THỬ NGHIỆM 3D
+                    TRAILER NHÀ CÓ GIỖ - 3COVANGOC STUDIO
                   </h3>
                 </div>
               </div>

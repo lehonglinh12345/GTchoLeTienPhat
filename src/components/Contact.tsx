@@ -76,6 +76,32 @@ export default function Contact() {
                   <p className="text-base md:text-xl font-bold hover:text-studio-red transition-colors">3CoVaNgoc Studio</p>
                 </div>
               </a>
+              <a
+  href="https://www.tiktok.com/@3covangoc.studio"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit"
+>
+  <div className="w-10 h-10 md:w-14 md:h-14 bg-studio-wine/30 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 group-hover:bg-studio-red group-hover:border-studio-red/30 transition-all shrink-0">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="w-[18px] h-[18px] md:w-6 md:h-6 text-studio-gold group-hover:text-white"
+    >
+      <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.187h-3.161v12.138a2.593 2.593 0 1 1-2.593-2.593c.214 0 .421.028.621.08V8.917a5.84 5.84 0 1 0 5.812 5.84V8.588a8.24 8.24 0 0 0 4.8 1.527V6.954c-.61 0-1.192-.094-1.709-.268z" />
+    </svg>
+  </div>
+
+  <div>
+    <p className="text-white/40 text-[10px] uppercase tracking-widest mb-0.5">
+      TikTok
+    </p>
+    <p className="text-base md:text-xl font-bold hover:text-studio-red transition-colors">
+      @3covangoc.studio
+    </p>
+  </div>
+</a>
             </div>
           </motion.div>
 
