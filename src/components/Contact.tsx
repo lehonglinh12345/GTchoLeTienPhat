@@ -15,7 +15,11 @@ const Contact = memo(function Contact() {
     const message = formData.get('message');
     
     const mailtoUrl = `mailto:3covangocstudio@gmail.com?subject=Liên hệ từ ${encodeURIComponent(name as string)}&body=Họ tên: ${encodeURIComponent(name as string)}%0D%0AEmail: ${encodeURIComponent(email as string)}%0D%0ADịch vụ: ${encodeURIComponent(service as string)}%0D%0ALời nhắn: ${encodeURIComponent(message as string)}`;
-    window.location.assign(mailtoUrl);
+    
+    // Create a temporary link and click it - more reliable in mobile browsers
+    const link = document.createElement('a');
+    link.href = mailtoUrl;
+    link.click();
   };
 
   return (
@@ -73,7 +77,7 @@ const Contact = memo(function Contact() {
                   <p className="text-base md:text-xl font-bold hover:text-studio-red transition-colors">3covangocstudio@gmail.com</p>
                 </div>
               </a>
-              <a href="https://www.facebook.com/profile.php?id=61589512139159" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
+              <a href="https://www.facebook.com/profile.php?id=61589512139159" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
                 <div className="w-10 h-10 md:w-14 md:h-14 bg-studio-wine/30 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 group-hover:bg-studio-red group-hover:border-studio-red/30 transition-all shrink-0">
                   <Facebook size={18} className="text-studio-gold group-hover:text-white md:w-6 md:h-6" />
                 </div>
@@ -82,7 +86,7 @@ const Contact = memo(function Contact() {
                   <p className="text-base md:text-xl font-bold hover:text-studio-red transition-colors">3CoVaNgoc Studio</p>
                 </div>
               </a>
-              <a href="https://www.youtube.com/@3CoVaNgocStudio" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
+              <a href="https://www.youtube.com/@3CoVaNgocStudio" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
                 <div className="w-10 h-10 md:w-14 md:h-14 bg-studio-wine/30 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 group-hover:bg-studio-red group-hover:border-studio-red/30 transition-all shrink-0">
                   <Youtube size={18} className="text-studio-gold group-hover:text-white md:w-6 md:h-6" />
                 </div>
@@ -93,6 +97,7 @@ const Contact = memo(function Contact() {
               </a>
               <a
                 href="https://www.tiktok.com/@3covangoc.studio"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit"
               >

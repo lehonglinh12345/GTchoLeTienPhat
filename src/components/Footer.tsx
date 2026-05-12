@@ -124,16 +124,15 @@ const Footer = memo(function Footer() {
               <div className="flex flex-col gap-1">
                 <span className="text-neutral-600 text-[10px] uppercase font-bold">{t.footer.social}</span>
                 <div className="flex gap-6 mt-1">
-                  <a href="https://www.facebook.com/profile.php?id=61589512139159" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
+                  <a href="https://www.facebook.com/profile.php?id=61589512139159" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
                     Facebook
                   </a>
-                  <a href="https://www.youtube.com/@3CoVaNgocStudio" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
+                  <a href="https://www.youtube.com/@3CoVaNgocStudio" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
                     YouTube
                   </a>
-                  <a href="https://www.tiktok.com/@3covangoc.studio" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
+                  <a href="https://www.tiktok.com/@3covangoc.studio" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
                     TikTok
                   </a>
-
                 </div>
               </div>
             </div>
@@ -200,6 +199,7 @@ const Footer = memo(function Footer() {
             <div className="flex items-center justify-center gap-6 flex-wrap">
               <a
                 href="https://www.facebook.com/re.hon.rin.2025"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="
                   text-[10px]
@@ -217,6 +217,7 @@ const Footer = memo(function Footer() {
 
               <a
                 href="https://lehonglinh.vercel.app/"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="
                   text-[10px]
