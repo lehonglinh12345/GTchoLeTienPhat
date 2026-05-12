@@ -107,16 +107,16 @@ export default function Footer() {
             <div className="grid grid-cols-1 gap-6">
               <div className="flex flex-col gap-1">
                 <span className="text-neutral-600 text-[10px] uppercase font-bold">{t.contact.email}</span>
-                <button 
-                  onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
+                <a 
+                  href="mailto:3covangocstudio@gmail.com"
                   className="text-white hover:text-studio-red transition-all text-sm font-medium text-left"
                 >
                   3covangocstudio@gmail.com
-                </button>
+                </a>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-neutral-600 text-[10px] uppercase font-bold">Hotline</span>
-                <a href="tel:0842992493" className="text-white hover:text-studio-red transition-all text-sm font-medium">084 299 2493</a>
+                <a href="tel:0842992493" className="text-white hover:text-studio-red transition-all text-sm font-medium">084 299 2493 (TRÍ BẢO)</a>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-neutral-600 text-[10px] uppercase font-bold">{t.footer.social}</span>

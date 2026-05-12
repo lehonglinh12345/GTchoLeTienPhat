@@ -31,7 +31,7 @@ export default function Contact() {
             <h2 className="editorial-tag mb-8">
               <span /> {t.contact.tag}
             </h2>
-            <h3 className="text-4xl md:text-7xl font-bold mb-6 md:mb-10 leading-[1.1] md:leading-[0.9] tracking-tighter">
+            <h3 className="text-3xl sm:text-4xl md:text-7xl font-bold mb-6 md:mb-10 leading-[1.1] md:leading-[0.9] tracking-tighter">
               {t.contact.title.includes('BẮT ĐẦU') ? (
                 <>
                   {t.contact.title.split('BẮT ĐẦU')[0]} <br />
@@ -57,21 +57,21 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-white/40 text-[10px] uppercase tracking-widest mb-0.5">{t.contact.phone}</p>
-                  <p className="text-base md:text-xl font-bold">084 299 2493</p>
+                  <p className="text-base md:text-xl font-bold">084 299 2493 (TRÍ BẢO)</p>
                 </div>
               </div>
-              <div 
-                onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
-                className="flex items-center gap-4 md:gap-6 group cursor-pointer"
+              <a 
+                href="mailto:3covangocstudio@gmail.com"
+                className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit"
               >
                 <div className="w-10 h-10 md:w-14 md:h-14 bg-studio-wine/30 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 group-hover:bg-studio-red group-hover:border-studio-red/30 transition-all shrink-0">
                   <Mail size={18} className="text-studio-gold group-hover:text-white md:w-6 md:h-6" />
                 </div>
                 <div>
                   <p className="text-white/40 text-[10px] uppercase tracking-widest mb-0.5">{t.contact.email}</p>
-                  <p className="text-base md:text-xl font-bold group-hover:text-studio-red transition-colors">3covangocstudio@gmail.com</p>
+                  <p className="text-base md:text-xl font-bold hover:text-studio-red transition-colors">3covangocstudio@gmail.com</p>
                 </div>
-              </div>
+              </a>
               <a href="https://www.facebook.com/profile.php?id=61589512139159" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
                 <div className="w-10 h-10 md:w-14 md:h-14 bg-studio-wine/30 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 group-hover:bg-studio-red group-hover:border-studio-red/30 transition-all shrink-0">
                   <Facebook size={18} className="text-studio-gold group-hover:text-white md:w-6 md:h-6" />
