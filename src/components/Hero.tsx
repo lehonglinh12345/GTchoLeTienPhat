@@ -1,5 +1,5 @@
+import { memo, useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { useRef, useState, useEffect } from 'react';
 import { 
   Play, 
   Pause, 
@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export default function Hero() {
+const Hero = memo(function Hero() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const fullscreenRef = useRef<HTMLDivElement>(null);
@@ -48,30 +48,32 @@ export default function Hero() {
       <div className="absolute inset-0 z-0 bg-[#0A0A0A]">
         <motion.div 
           style={{ y: useTransform(scrollY, [0, 500], [0, 150]) }}
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 will-change-transform"
         >
           <img 
             src="/images/input_file_1.png" 
             alt="Hero Background" 
             className="w-full h-full object-cover opacity-40 brightness-[0.7]" 
             referrerPolicy="no-referrer"
+            loading="eager"
+            decoding="async"
           />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-studio-black/20 via-studio-black/60 to-studio-black z-10" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-studio-red/20 blur-[150px] rounded-full animate-pulse z-1" />
-        <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-studio-red/10 blur-[180px] rounded-full animate-pulse delay-700 z-1" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-studio-red/20 blur-[150px] rounded-full animate-pulse z-1 will-change-transform" />
+        <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-studio-red/10 blur-[180px] rounded-full animate-pulse delay-700 z-1 will-change-transform" />
       </div>
 
       {/* Floating abstract elements */}
       <motion.div 
         style={{ y: y1 }}
-        className="absolute top-1/3 left-10 w-24 h-24 border border-studio-gold/20 rotate-45 rounded-lg backdrop-blur-sm z-10"
+        className="absolute top-1/3 left-10 w-24 h-24 border border-studio-gold/20 rotate-45 rounded-lg backdrop-blur-sm z-10 will-change-transform"
         animate={{ rotate: 405 }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       />
       <motion.div 
         style={{ y: y2 }}
-        className="absolute bottom-1/4 right-10 w-32 h-32 border border-studio-red/30 -rotate-12 rounded-full backdrop-blur-sm z-10"
+        className="absolute bottom-1/4 right-10 w-32 h-32 border border-studio-red/30 -rotate-12 rounded-full backdrop-blur-sm z-10 will-change-transform"
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -93,7 +95,7 @@ export default function Hero() {
                  }
                }
              }}
-             className="col-span-12 xl:col-span-7 text-left"
+             className="col-span-12 xl:col-span-7 text-left will-change-opacity"
           >
             <motion.h2 
               variants={{
@@ -104,13 +106,13 @@ export default function Hero() {
             >
               <span /> {t.hero.tag}
             </motion.h2>
-            <motion.h1 
-              variants={{
-                hidden: { opacity: 0, y: 30 },
-                visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.76, 0, 0.24, 1] } }
-              }}
-              className="text-6xl md:text-8xl font-bold text-white mb-8 leading-[0.9] tracking-tighter"
-            >
+          <motion.h1 
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0, transition: { duration: 1.2, ease: [0.76, 0, 0.24, 1] } }
+            }}
+            className="text-6xl md:text-8xl font-bold text-white mb-8 leading-[0.9] tracking-tighter will-change-transform"
+          >
               {t.hero.title1} <br />
               <span className="inline-block px-2 py-1 text-transparent bg-clip-text bg-gradient-to-r from-studio-red to-studio-wine italic font-serif">{t.hero.title2}</span><br />
               {t.hero.title3}
@@ -138,7 +140,7 @@ export default function Hero() {
                   onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="relative px-10 py-4 bg-studio-red text-white font-bold uppercase tracking-widest text-xs transition-all"
+                  className="relative px-10 py-4 bg-studio-red text-white font-bold uppercase tracking-widest text-xs transition-all cursor-pointer"
                 >
                   {t.hero.viewProjects}
                 </motion.button>
@@ -147,7 +149,7 @@ export default function Hero() {
                 onClick={() => document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth' })}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-10 py-4 border border-white/20 text-white font-bold uppercase tracking-widest text-xs hover:bg-white/5 transition-all text-center"
+                className="px-10 py-4 border border-white/20 text-white font-bold uppercase tracking-widest text-xs hover:bg-white/5 transition-all text-center cursor-pointer"
               >
                 {t.hero.sendEmail}
               </motion.button>
@@ -160,7 +162,7 @@ export default function Hero() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.76, 0, 0.24, 1] }}
             viewport={{ once: true }}
-            className="col-span-12 xl:col-span-5 relative mt-8 xl:mt-0 max-w-[320px] sm:max-w-md mr-auto xl:mr-0 w-full"
+            className="col-span-12 xl:col-span-5 relative mt-8 xl:mt-0 max-w-[320px] sm:max-w-md mr-auto xl:mr-0 w-full will-change-transform"
           >
             <div className="relative group cursor-pointer">
               {/* Outer glow */}
@@ -186,16 +188,23 @@ export default function Hero() {
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-studio-black/80 via-transparent to-transparent opacity-100 xl:opacity-60" />
                 
-                {/* Scanlines */}
+                {/* SCANLINES - Hiệu ứng nhiễu sọc kiểu TV cũ / CRT TV effect line */}
                 <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]" />
 
-                {/* Bottom Badge */}
+                {/* THÔNG TIN VIDEO GÓC DƯỚI - Bottom Info Section */}
                 <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 right-4 md:right-8">
-                  <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2 text-highlight">
-                    <div className="w-1 md:w-2 h-1 md:h-2 rounded-full bg-studio-red animate-pulse ring-2 ring-studio-red/30" />
-                    <span className="text-[7px] md:text-[10px] text-studio-gold uppercase font-bold tracking-widest bg-studio-gold/10 px-2 py-0.5 rounded shadow-[0_0_10px_rgba(212,175,55,0.3)]">{t.hero.deepProject}</span>
+                  {/* Nhãn dự án - Category badge (e.g., Dự án chuyên sâu) */}
+                  <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
+                    <div className="w-1 md:w-2 h-1 md:h-2 rounded-full bg-studio-red animate-pulse" />
+                    <span className="text-[7px] md:text-[10px] text-white/50 uppercase font-bold tracking-widest">
+                      {t.hero.deepProject}
+                    </span>
                   </div>
-                  <h3 className="text-[10px] md:text-xl font-bold text-white uppercase tracking-tighter">TRAILER NHÀ CÓ GIỖ - 3COVANGOC STUDIO</h3>
+                  
+                  {/* Tiêu đề chính của Trailer - Main trailer title */}
+                  <h3 className="text-[10px] md:text-xl font-bold text-white uppercase tracking-tighter">
+                    TRAILER NHÀ CÓ GIỖ - 3COVANGOC STUDIO
+                  </h3>
                 </div>
                 
                 {/* Play Pause */}
@@ -213,7 +222,7 @@ export default function Hero() {
                       setIsPlaying(!isPlaying);
                     }
                   }}
-                  className="absolute top-3 left-3 md:top-6 md:left-6 z-30 w-8 h-8 md:w-12 md:h-12 rounded-full bg-studio-black/60 md:bg-studio-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-studio-red transition-colors"
+                  className="absolute top-3 left-3 md:top-6 md:left-6 z-30 w-8 h-8 md:w-12 md:h-12 rounded-full bg-studio-black/60 md:bg-studio-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-studio-red transition-colors cursor-pointer"
                 >
                   {isPlaying ? <Pause className="w-3.5 h-3.5 md:w-5 md:h-5" /> : <Play className="w-3.5 h-3.5 md:w-5 md:h-5 fill-current ml-0.5" />}
                 </motion.button>
@@ -226,7 +235,7 @@ export default function Hero() {
                     e.stopPropagation();
                     setIsMuted(!isMuted);
                   }}
-                  className="absolute top-3 right-3 md:top-6 md:right-6 z-30 w-8 h-8 md:w-12 md:h-12 rounded-full bg-studio-black/60 md:bg-studio-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-studio-red transition-colors"
+                  className="absolute top-3 right-3 md:top-6 md:right-6 z-30 w-8 h-8 md:w-12 md:h-12 rounded-full bg-studio-black/60 md:bg-studio-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-studio-red transition-colors cursor-pointer"
                 >
                   {isMuted ? <VolumeX className="w-3.5 h-3.5 md:w-5 md:h-5" /> : <Volume2 className="w-3.5 h-3.5 md:w-5 md:h-5" />}
                 </motion.button>
@@ -251,7 +260,7 @@ export default function Hero() {
                       console.error(err);
                     }
                   }}
-                  className="absolute bottom-3 right-3 md:bottom-6 md:right-6 z-30 w-8 h-8 md:w-12 md:h-12 rounded-full bg-studio-black/60 md:bg-studio-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-studio-red transition-colors"
+                  className="absolute bottom-3 right-3 md:bottom-6 md:right-6 z-30 w-8 h-8 md:w-12 md:h-12 rounded-full bg-studio-black/60 md:bg-studio-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-studio-red transition-colors cursor-pointer"
                 >
                   {isFullscreen ? <Minimize2 className="w-3.5 h-3.5 md:w-5 md:h-5" /> : <Maximize2 className="w-3.5 h-3.5 md:w-5 md:h-5" />}
                 </motion.button>
@@ -268,10 +277,12 @@ export default function Hero() {
       {/* Scroll indicator */}
       <motion.div 
         style={{ opacity }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 will-change-opacity"
       >
         <div className="h-12 w-px bg-gradient-to-b from-studio-gold to-transparent" />
       </motion.div>
     </section>
   );
-}
+});
+
+export default Hero;

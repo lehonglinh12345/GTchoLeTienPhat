@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { motion } from 'motion/react';
 import { Phone, Mail, Facebook, MapPin, Send, Youtube } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export default function Contact() {
+const Contact = memo(function Contact() {
   const { t } = useLanguage();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -26,7 +26,8 @@ export default function Contact() {
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
+            className="will-change-transform"
           >
             <h2 className="editorial-tag mb-8">
               <span /> {t.contact.tag}
@@ -123,8 +124,8 @@ export default function Contact() {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="glass-card p-6 md:p-10 rounded-xl md:rounded-2xl border-white/5 relative"
+            viewport={{ once: true, margin: "-100px" }}
+            className="glass-card p-6 md:p-10 rounded-xl md:rounded-2xl border-white/5 relative will-change-transform"
           >
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-studio-red/10 blur-[100px] rounded-full" />
             
@@ -181,7 +182,7 @@ export default function Contact() {
                   type="submit"
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
-                  className="relative w-full py-4 bg-studio-red text-white font-bold uppercase tracking-[0.3em] shadow-xl transition-all flex items-center justify-center gap-3 text-[10px]"
+                  className="relative w-full py-4 bg-studio-red text-white font-bold uppercase tracking-[0.3em] shadow-xl transition-all flex items-center justify-center gap-3 text-[10px] cursor-pointer"
                 >
                   {t.contact.form.submit} <Send size={12} />
                 </motion.button>
@@ -192,4 +193,6 @@ export default function Contact() {
       </div>
     </section>
   );
-}
+});
+
+export default Contact;

@@ -1,5 +1,5 @@
+import { memo, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useState } from 'react';
 import { X, Play, Image as ImageIcon, ExternalLink, Calendar, Tag } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -16,7 +16,7 @@ interface Project {
   tags: string[];
 }
 
-export default function ProjectShowcase() {
+const ProjectShowcase = memo(function ProjectShowcase() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const { t, language } = useLanguage();
 
@@ -38,19 +38,19 @@ export default function ProjectShowcase() {
   return (
     <section id="projects" className="min-h-screen py-24 bg-studio-black overflow-hidden relative flex items-center">
       <div className="container mx-auto px-6">
-        <div className="mb-16">
-          <h2 className="text-5xl md:text-7xl font-bold tracking-tighter uppercase">{t.projects.title} <span className="text-studio-red">{t.projects.span}</span></h2>
+        <div className="mb-12 md:mb-16">
+          <h2 className="text-4xl md:text-7xl font-bold tracking-tighter uppercase">{t.projects.title} <span className="text-studio-red">{t.projects.span}</span></h2>
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {PROJECTS.map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: index * 0.1, ease: [0.76, 0, 0.24, 1] }}
-              viewport={{ once: true }}
+              transition={{ duration: 1, delay: index * 0.05, ease: [0.76, 0, 0.24, 1] }}
+              viewport={{ once: true, margin: "-50px" }}
               onClick={() => setSelectedProject(project)}
               className="group relative cursor-pointer will-change-transform"
             >
@@ -59,6 +59,8 @@ export default function ProjectShowcase() {
                   src={project.mainImage} 
                   className="w-full h-full object-cover transition-all duration-700" 
                   alt={project.title} 
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="mt-4">
@@ -72,9 +74,9 @@ export default function ProjectShowcase() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.2, ease: [0.76, 0, 0.24, 1] }}
-            viewport={{ once: true }}
-            className="group relative cursor-pointer"
+            transition={{ duration: 1, delay: 0.1, ease: [0.76, 0, 0.24, 1] }}
+            viewport={{ once: true, margin: "-50px" }}
+            className="group relative cursor-pointer will-change-transform"
           >
             <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-dashed border-white/20 bg-white/[0.02] flex flex-col items-center justify-center gap-4 group-hover:border-studio-red/50 transition-all duration-500 overflow-hidden">
               <div className="absolute inset-0 bg-studio-red/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -107,10 +109,11 @@ export default function ProjectShowcase() {
             
             <motion.div
               layoutId={selectedProject.id}
-              initial={{ opacity: 0, scale: 1, y: 100 }}
+              initial={{ opacity: 0, scale: 0.9, y: 100 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 50 }}
-              className="relative w-full max-w-6xl h-full md:h-auto md:max-h-[90vh] bg-neutral-900 md:rounded-3xl overflow-hidden shadow-2xl border-x md:border border-white/10 flex flex-col"
+              exit={{ opacity: 0, scale: 0.9, y: 50 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="relative w-full max-w-6xl h-full md:h-auto md:max-h-[90vh] bg-neutral-900 md:rounded-3xl overflow-hidden shadow-2xl border-x md:border border-white/10 flex flex-col will-change-transform"
             >
               {/* Close Button */}
               <button 
@@ -131,6 +134,8 @@ export default function ProjectShowcase() {
                     alt={selectedProject.title}
                     className="w-full h-full object-cover"
                     referrerPolicy="no-referrer"
+                    loading="lazy"
+                    decoding="async"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/40 to-transparent" />
                   <div className="absolute bottom-6 left-6 md:bottom-10 md:left-12 pr-6">
@@ -147,8 +152,8 @@ export default function ProjectShowcase() {
                          <h3 className="text-studio-gold text-[10px] md:text-xs font-bold tracking-widest uppercase mb-4 flex items-center gap-2 opacity-60">
                            <Tag size={12} /> {t.projects.modal.story}
                          </h3>
-                         <p className="text-neutral-200 text-lg md:text-xl font-light leading-relaxed">
-                           {selectedProject.description}
+                         <p className="text-neutral-200 text-lg md:text-xl font-light leading-relaxed whitespace-pre-line">
+                           {selectedProject.id === 'project-1' ? t.projects.project1Desc : selectedProject.description}
                          </p>
                        </div>
 
@@ -163,6 +168,7 @@ export default function ProjectShowcase() {
                                className="w-full h-full"
                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                allowFullScreen
+                               loading="lazy"
                              ></iframe>
                            </div>
                          </div>
@@ -177,13 +183,15 @@ export default function ProjectShowcase() {
                                  <motion.div 
                                    key={idx}
                                    whileHover={{ scale: 1.02 }}
-                                   className="rounded-xl overflow-hidden border border-white/5 aspect-video md:aspect-square lg:aspect-video bg-white/5"
+                                   className="rounded-xl overflow-hidden border border-white/5 aspect-video md:aspect-square lg:aspect-video bg-white/5 will-change-transform"
                                  >
                                    <img 
                                      src={img} 
                                      alt={`Gallery ${idx}`} 
                                      className="w-full h-full object-cover transition-all duration-700" 
                                      referrerPolicy="no-referrer"
+                                     loading="lazy"
+                                     decoding="async"
                                    />
                                  </motion.div>
                                ))}
@@ -240,4 +248,6 @@ export default function ProjectShowcase() {
       </AnimatePresence>
     </section>
   );
-}
+});
+
+export default ProjectShowcase;

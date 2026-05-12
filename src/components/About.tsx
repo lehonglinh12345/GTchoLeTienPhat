@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export default function About() {
+const About = memo(function About() {
   const { t } = useLanguage();
 
   return (
@@ -11,7 +12,7 @@ export default function About() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true }}
+            viewport={{ once: true, margin: "-100px" }}
             variants={{
               hidden: { opacity: 0 },
               visible: {
@@ -22,13 +23,21 @@ export default function About() {
                 }
               }
             }}
-            className="relative"
+            className="relative will-change-opacity"
           >
             <motion.h2 variants={{ hidden: { opacity: 0, x: -20 }, visible: { opacity: 1, x: 0 } }} className="editorial-tag mb-8">
               <span /> {t.about.tag}
             </motion.h2>
             <motion.h3 variants={{ hidden: { opacity: 0, y: 30 }, visible: { opacity: 1, y: 0 } }} className="text-4xl md:text-5xl font-bold mb-8 leading-tight tracking-tighter">
-              {t.about.title.split('Studio Sáng Tạo')[0]} <span className="text-transparent bg-clip-text bg-gradient-to-r from-studio-red to-studio-wine">Studio Sáng Tạo</span> {t.about.title.split('Studio Sáng Tạo')[1]}
+              {t.about.title.includes('Studio Sáng Tạo') ? (
+                <>
+                  {t.about.title.split('Studio Sáng Tạo')[0]} <span className="text-transparent bg-clip-text bg-gradient-to-r from-studio-red to-studio-wine">Studio Sáng Tạo</span> {t.about.title.split('Studio Sáng Tạo')[1]}
+                </>
+              ) : t.about.title.includes('Creative Studio') ? (
+                <>
+                  {t.about.title.split('Creative Studio')[0]} <span className="text-transparent bg-clip-text bg-gradient-to-r from-studio-red to-studio-wine">Creative Studio</span> {t.about.title.split('Creative Studio')[1]}
+                </>
+              ) : t.about.title}
             </motion.h3>
             <motion.p
               variants={{
@@ -66,14 +75,16 @@ export default function About() {
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1], delay: 0.2 }}
-            viewport={{ once: true }}
-            className="relative aspect-square md:aspect-[4/5] rounded-3xl overflow-hidden group"
+            viewport={{ once: true, margin: "-100px" }}
+            className="relative aspect-square md:aspect-[4/5] rounded-3xl overflow-hidden group will-change-transform"
           >
             <img 
               src="/images/input_file_2.png" 
               alt="Creative workspace" 
               className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
               referrerPolicy="no-referrer"
+              loading="lazy"
+              decoding="async"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-studio-black via-transparent to-transparent opacity-60" />
             <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 md:right-8">
@@ -87,4 +98,6 @@ export default function About() {
       </div>
     </section>
   );
-}
+});
+
+export default About;

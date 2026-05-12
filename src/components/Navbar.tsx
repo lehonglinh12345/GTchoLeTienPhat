@@ -1,39 +1,51 @@
+import { memo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { useState, useEffect } from 'react';
 import { cn } from '../lib/utils';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Language } from '../lib/translations';
 
-export default function Navbar() {
+const Navbar = memo(function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
+    // 1. Detect scrolled state for background transition
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-
-      // Detect current section in view
-      const sections = ['home', 'about', 'services', 'projects', 'team', 'contact'];
-      const scrollPosition = window.scrollY + 120;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const offsetTop = element.offsetTop;
-          const height = element.offsetHeight;
-
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + height) {
-            setActiveSection(section);
-          }
-        }
-      }
+      const isScrolled = window.scrollY > 50;
+      setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // 2. Detect active section using IntersectionObserver (much more performant)
+    const sections = ['home', 'about', 'services', 'projects', 'team', 'contact'];
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -70% 0px', // When the section takes up the middle of the screen
+      threshold: 0,
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      observer.disconnect();
+    };
   }, []);
 
   const navLinks = [
@@ -58,7 +70,7 @@ export default function Navbar() {
         animate={{ y: 0 }}
         transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
         className={cn(
-          "fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 px-6 lg:px-12 flex justify-between items-center",
+          "fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 px-6 lg:px-12 flex justify-between items-center will-change-transform",
           scrolled || isOpen ? "bg-studio-black/80 backdrop-blur-md py-4 border-b border-white/5" : "bg-transparent shadow-none"
         )}
       >
@@ -149,9 +161,12 @@ export default function Navbar() {
             {languages.map((lang) => (
               <button
                 key={lang.code}
-                onClick={() => setLanguage(lang.code)}
+                onClick={() => {
+                  setLanguage(lang.code);
+                  setIsOpen(false);
+                }}
                 className={cn(
-                  "px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider transition-all",
+                  "px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider transition-all cursor-pointer",
                   language === lang.code 
                     ? "bg-studio-red text-white shadow-lg shadow-studio-red/20" 
                     : "text-white/40 hover:text-white/70"
@@ -211,4 +226,6 @@ export default function Navbar() {
       </AnimatePresence>
     </>
   );
-}
+});
+
+export default Navbar;

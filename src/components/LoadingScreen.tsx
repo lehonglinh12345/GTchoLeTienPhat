@@ -21,8 +21,8 @@ export default function LoadingScreen() {
           <motion.div
             initial={{ scale: 1.2, opacity: 0 }}
             animate={{ scale: 1, opacity: 0.15 }}
-            transition={{ duration: 2, ease: "easeOut" }}
-            className="absolute inset-0 z-0"
+            transition={{ duration: 2, ease: [0.76, 0, 0.24, 1] }}
+            className="absolute inset-0 z-0 will-change-transform"
           >
             <img 
               src="/images/input_file_1.png" 
@@ -35,8 +35,8 @@ export default function LoadingScreen() {
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="w-48 h-48 md:w-64 md:h-64 relative z-10"
+            transition={{ duration: 1.2, ease: [0.76, 0, 0.24, 1] }}
+            className="w-48 h-48 md:w-64 md:h-64 relative z-10 will-change-transform"
           >
             <img 
               src="/images/input_file_0.png" 
