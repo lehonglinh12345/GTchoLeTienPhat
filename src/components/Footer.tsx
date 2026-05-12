@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import { motion } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-export default function Footer() {
+const Footer = memo(function Footer() {
   const { t } = useLanguage();
   
   const scrollToTop = () => {
@@ -55,6 +56,8 @@ export default function Footer() {
                       group-hover:rotate-6
                       transition-transform duration-500
                     "
+                    loading="lazy"
+                    decoding="async"
                   />
 
                   {/* Shine Effect */}
@@ -93,7 +96,7 @@ export default function Footer() {
                 { name: t.nav.contact, id: 'contact' }
               ].map((link) => (
                 <li key={link.id}>
-                  <a href={`#${link.id}`} className="text-neutral-400 hover:text-white text-xs uppercase tracking-widest font-semibold transition-colors">
+                  <a href={`#${link.id}`} className="text-neutral-400 hover:text-white text-xs uppercase tracking-widest font-semibold transition-colors cursor-pointer">
                     {link.name}
                   </a>
                 </li>
@@ -109,25 +112,25 @@ export default function Footer() {
                 <span className="text-neutral-600 text-[10px] uppercase font-bold">{t.contact.email}</span>
                 <a 
                   href="mailto:3covangocstudio@gmail.com"
-                  className="text-white hover:text-studio-red transition-all text-sm font-medium text-left"
+                  className="text-white hover:text-studio-red transition-all text-sm font-medium text-left cursor-pointer"
                 >
                   3covangocstudio@gmail.com
                 </a>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-neutral-600 text-[10px] uppercase font-bold">Hotline</span>
-                <a href="tel:0842992493" className="text-white hover:text-studio-red transition-all text-sm font-medium">084 299 2493 (TRÍ BẢO)</a>
+                <a href="tel:0842992493" className="text-white hover:text-studio-red transition-all text-sm font-medium cursor-pointer">084 299 2493 (TRÍ BẢO)</a>
               </div>
               <div className="flex flex-col gap-1">
                 <span className="text-neutral-600 text-[10px] uppercase font-bold">{t.footer.social}</span>
                 <div className="flex gap-6 mt-1">
-                  <a href="https://www.facebook.com/profile.php?id=61589512139159" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold">
+                  <a href="https://www.facebook.com/profile.php?id=61589512139159" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
                     Facebook
                   </a>
-                  <a href="https://www.youtube.com/@3CoVaNgocStudio" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold">
+                  <a href="https://www.youtube.com/@3CoVaNgocStudio" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
                     YouTube
                   </a>
-                  <a href="https://www.tiktok.com/@3covangoc.studio" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold">
+                  <a href="https://www.tiktok.com/@3covangoc.studio" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
                     TikTok
                   </a>
 
@@ -197,7 +200,6 @@ export default function Footer() {
             <div className="flex items-center justify-center gap-6 flex-wrap">
               <a
                 href="https://www.facebook.com/re.hon.rin.2025"
-                target="_blank"
                 rel="noopener noreferrer"
                 className="
                   text-[10px]
@@ -207,6 +209,7 @@ export default function Footer() {
                   hover:text-studio-red
                   transition-all duration-300
                   hover:-translate-y-1
+                  cursor-pointer
                 "
               >
                 {t.footer.dev.facebook}
@@ -214,7 +217,6 @@ export default function Footer() {
 
               <a
                 href="https://lehonglinh.vercel.app/"
-                target="_blank"
                 rel="noopener noreferrer"
                 className="
                   text-[10px]
@@ -224,6 +226,7 @@ export default function Footer() {
                   hover:text-studio-gold
                   transition-all duration-300
                   hover:-translate-y-1
+                  cursor-pointer
                 "
               >
                 {t.footer.dev.portfolio}
@@ -233,7 +236,7 @@ export default function Footer() {
           
           <button 
             onClick={scrollToTop}
-            className="group flex items-center gap-3 text-[10px] text-neutral-400 uppercase tracking-widest font-bold hover:text-studio-gold transition-all"
+            className="group flex items-center gap-3 text-[10px] text-neutral-400 uppercase tracking-widest font-bold hover:text-studio-gold transition-all cursor-pointer"
           >
             {t.footer.scrollToTop}
             <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-studio-gold transition-all group-hover:-translate-y-1">
@@ -247,4 +250,6 @@ export default function Footer() {
       <div className="absolute top-0 right-0 w-[300px] h-full bg-studio-red/5 blur-[100px] -skew-x-[20deg] pointer-events-none" />
     </footer>
   );
-}
+});
+
+export default Footer;

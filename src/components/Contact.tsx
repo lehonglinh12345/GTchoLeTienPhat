@@ -14,8 +14,8 @@ const Contact = memo(function Contact() {
     const service = formData.get('service');
     const message = formData.get('message');
     
-    const mailtoUrl = `mailto:3covangocstudio@gmail.com?subject=Liên hệ từ ${name}&body=Họ tên: ${name}%0D%0AEmail: ${email}%0D%0ADịch vụ: ${service}%0D%0ALời nhắn: ${message}`;
-    window.location.href = mailtoUrl;
+    const mailtoUrl = `mailto:3covangocstudio@gmail.com?subject=Liên hệ từ ${encodeURIComponent(name as string)}&body=Họ tên: ${encodeURIComponent(name as string)}%0D%0AEmail: ${encodeURIComponent(email as string)}%0D%0ADịch vụ: ${encodeURIComponent(service as string)}%0D%0ALời nhắn: ${encodeURIComponent(message as string)}`;
+    window.location.assign(mailtoUrl);
   };
 
   return (
@@ -52,15 +52,15 @@ const Contact = memo(function Contact() {
             </p>
 
             <div className="space-y-4 md:space-y-8">
-              <div className="flex items-center gap-4 md:gap-6 group">
+              <a href="tel:0842992493" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
                 <div className="w-10 h-10 md:w-14 md:h-14 bg-studio-wine/30 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 group-hover:bg-studio-red group-hover:border-studio-red/30 transition-all shrink-0">
                   <Phone size={18} className="text-studio-gold group-hover:text-white md:w-6 md:h-6" />
                 </div>
                 <div>
                   <p className="text-white/40 text-[10px] uppercase tracking-widest mb-0.5">{t.contact.phone}</p>
-                  <p className="text-base md:text-xl font-bold">084 299 2493 (TRÍ BẢO)</p>
+                  <p className="text-base md:text-xl font-bold hover:text-studio-red transition-colors">084 299 2493 (TRÍ BẢO)</p>
                 </div>
-              </div>
+              </a>
               <a 
                 href="mailto:3covangocstudio@gmail.com"
                 className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit"
@@ -73,7 +73,7 @@ const Contact = memo(function Contact() {
                   <p className="text-base md:text-xl font-bold hover:text-studio-red transition-colors">3covangocstudio@gmail.com</p>
                 </div>
               </a>
-              <a href="https://www.facebook.com/profile.php?id=61589512139159" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
+              <a href="https://www.facebook.com/profile.php?id=61589512139159" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
                 <div className="w-10 h-10 md:w-14 md:h-14 bg-studio-wine/30 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 group-hover:bg-studio-red group-hover:border-studio-red/30 transition-all shrink-0">
                   <Facebook size={18} className="text-studio-gold group-hover:text-white md:w-6 md:h-6" />
                 </div>
@@ -82,7 +82,7 @@ const Contact = memo(function Contact() {
                   <p className="text-base md:text-xl font-bold hover:text-studio-red transition-colors">3CoVaNgoc Studio</p>
                 </div>
               </a>
-              <a href="https://www.youtube.com/@3CoVaNgocStudio" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
+              <a href="https://www.youtube.com/@3CoVaNgocStudio" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
                 <div className="w-10 h-10 md:w-14 md:h-14 bg-studio-wine/30 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 group-hover:bg-studio-red group-hover:border-studio-red/30 transition-all shrink-0">
                   <Youtube size={18} className="text-studio-gold group-hover:text-white md:w-6 md:h-6" />
                 </div>
@@ -93,7 +93,6 @@ const Contact = memo(function Contact() {
               </a>
               <a
                 href="https://www.tiktok.com/@3covangoc.studio"
-                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit"
               >
