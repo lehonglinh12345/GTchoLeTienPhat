@@ -30,7 +30,7 @@ const ProjectShowcase = memo(function ProjectShowcase() {
       mainImage: "/images/input_file_1.png",
       gallery: [],
       color: "bg-studio-red",
-      videoUrl: "https://www.youtube.com/embed/TM142-7LiiQ",
+      videoUrl: "https://youtu.be/bB6ZTFAWmcQ",
       tags: ["3D Animation", "Creative Direction", "CGI", "Visual Storytelling"]
     }
   ];
