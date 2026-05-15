@@ -31,7 +31,7 @@ const ProjectShowcase = memo(function ProjectShowcase() {
       gallery: [],
       color: "bg-studio-red",
       videoUrl: "https://www.youtube.com/embed/bB6ZTFAWmcQ",
-      tags: ["3D Animation", "Creative Direction", "CGI", "Visual Storytelling"]
+      tags: ["3D Animation", "Creative Direction","Visual Storytelling"]
     }
   ];
 
