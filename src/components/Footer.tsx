@@ -127,7 +127,7 @@ const Footer = memo(function Footer() {
                   <a href="https://www.facebook.com/profile.php?id=61589512139159" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
                     Facebook
                   </a>
-                  <a href="https://www.youtube.com/@3CoVaNgocStudio" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
+                  <a href="https://www.youtube.com/@3covangocStudioCreative" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">
                     YouTube
                   </a>
                   <a href="https://www.tiktok.com/@3covangoc.studio" target="_blank" rel="noopener noreferrer" className="text-xs text-white/40 hover:text-white transition-all uppercase tracking-widest font-bold cursor-pointer">

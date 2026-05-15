@@ -86,7 +86,7 @@ const Contact = memo(function Contact() {
                   <p className="text-base md:text-xl font-bold hover:text-studio-red transition-colors">3CoVaNgoc Studio</p>
                 </div>
               </a>
-              <a href="https://www.youtube.com/@3CoVaNgocStudio" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
+              <a href="https://www.youtube.com/@3covangocStudioCreative" target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 md:gap-6 group cursor-pointer w-fit">
                 <div className="w-10 h-10 md:w-14 md:h-14 bg-studio-wine/30 rounded-xl md:rounded-2xl flex items-center justify-center border border-white/5 group-hover:bg-studio-red group-hover:border-studio-red/30 transition-all shrink-0">
                   <Youtube size={18} className="text-studio-gold group-hover:text-white md:w-6 md:h-6" />
                 </div>
