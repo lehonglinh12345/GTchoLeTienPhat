@@ -9,6 +9,7 @@ const Navbar = memo(function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [projectModalOpen, setProjectModalOpen] = useState(false);
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
@@ -18,11 +19,11 @@ const Navbar = memo(function Navbar() {
       setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
     };
 
-    // 2. Detect active section using IntersectionObserver (much more performant)
+    // 2. Detect active section using IntersectionObserver
     const sections = ['home', 'about', 'services', 'projects', 'team', 'contact'];
     const observerOptions = {
       root: null,
-      rootMargin: '-20% 0px -70% 0px', // When the section takes up the middle of the screen
+      rootMargin: '-20% 0px -70% 0px',
       threshold: 0,
     };
 
@@ -40,11 +41,21 @@ const Navbar = memo(function Navbar() {
       if (el) observer.observe(el);
     });
 
+    // 3. Theo dõi class modal-open trên body để ẩn navbar khi project modal mở
+    const mutationObserver = new MutationObserver(() => {
+      setProjectModalOpen(document.body.classList.contains('modal-open'));
+    });
+    mutationObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
       observer.disconnect();
+      mutationObserver.disconnect();
     };
   }, []);
 
@@ -63,6 +74,11 @@ const Navbar = memo(function Navbar() {
     { code: 'ja', label: 'JP' },
   ];
 
+  // Ẩn hoàn toàn trên mobile khi project modal đang mở
+  if (projectModalOpen) {
+    return null;
+  }
+
   return (
     <>
       <motion.nav
@@ -79,51 +95,16 @@ const Navbar = memo(function Navbar() {
             href="#home"
             className="relative w-14 h-14 shrink-0 group cursor-pointer"
           >
-            {/* Glow Background */}
             <div className="absolute inset-0 rounded-full bg-studio-red/20 blur-2xl group-hover:bg-studio-red/40 transition-all duration-700" />
-
-            {/* Rotating Border */}
             <div className="absolute inset-0 rounded-full border border-white/10 border-t-studio-red animate-spin [animation-duration:8s]" />
-
-            {/* Pulse Ring */}
             <div className="absolute inset-0 rounded-full border border-studio-red/20 animate-ping" />
-
-            {/* Logo Container */}
-            <div
-              className="
-                relative w-full h-full rounded-full
-                bg-black/40 backdrop-blur-md
-                border border-white/10
-                flex items-center justify-center
-                overflow-hidden
-                shadow-[0_0_30px_rgba(255,0,0,0.15)]
-                group-hover:scale-110
-                transition-all duration-500
-              "
-            >
+            <div className="relative w-full h-full rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center overflow-hidden shadow-[0_0_30px_rgba(255,0,0,0.15)] group-hover:scale-110 transition-all duration-500">
               <img
                 src="/images/logo.png"
                 alt="3covangoc Studio Logo"
-                className="
-                  w-10 h-10 object-contain
-                  drop-shadow-[0_0_15px_rgba(255,0,0,0.45)]
-                  group-hover:rotate-6
-                  transition-transform duration-500
-                "
+                className="w-10 h-10 object-contain drop-shadow-[0_0_15px_rgba(255,0,0,0.45)] group-hover:rotate-6 transition-transform duration-500"
               />
-
-              {/* Shine Effect */}
-              <div
-                className="
-                  absolute inset-0
-                  bg-gradient-to-r
-                  from-transparent via-white/10 to-transparent
-                  -translate-x-full group-hover:translate-x-full
-                  transition-transform duration-1000
-                "
-              />
-
-              {/* Inner Glow */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               <div className="absolute inset-0 bg-studio-red/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
           </a>
@@ -145,7 +126,7 @@ const Navbar = memo(function Navbar() {
             >
               {link.name}
               {activeSection === link.id && (
-                <motion.span 
+                <motion.span
                   layoutId="activeNav"
                   className="absolute -bottom-1 left-0 w-full h-[1.5px] bg-studio-red flex items-center justify-center"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
@@ -167,8 +148,8 @@ const Navbar = memo(function Navbar() {
                 }}
                 className={cn(
                   "px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wider transition-all cursor-pointer",
-                  language === lang.code 
-                    ? "bg-studio-red text-white shadow-lg shadow-studio-red/20" 
+                  language === lang.code
+                    ? "bg-studio-red text-white shadow-lg shadow-studio-red/20"
                     : "text-white/40 hover:text-white/70"
                 )}
               >
@@ -176,9 +157,9 @@ const Navbar = memo(function Navbar() {
               </button>
             ))}
           </div>
-          
+
           {/* Mobile Menu Toggle */}
-          <button 
+          <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden text-white cursor-pointer p-2 hover:bg-white/5 rounded-full transition-colors z-[60]"
           >
@@ -197,8 +178,11 @@ const Navbar = memo(function Navbar() {
             transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
             className="fixed inset-0 z-[49] bg-studio-black/85 backdrop-blur-2xl flex flex-col items-center justify-center pt-20 px-6 md:hidden"
           >
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.65\" numOctaves=\"3\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\"/%3E%3C/svg%3E')" }}></div>
-            
+            <div
+              className="absolute inset-0 opacity-[0.03] pointer-events-none"
+              style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.65\" numOctaves=\"3\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\"/%3E%3C/svg%3E')" }}
+            />
+
             <div className="flex flex-col items-center gap-5 relative z-10 w-full">
               {navLinks.map((link, idx) => (
                 <motion.a
