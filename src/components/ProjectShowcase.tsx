@@ -1,6 +1,6 @@
-import { memo, useState } from 'react';
+import { memo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { X, Play, Image as ImageIcon, ExternalLink, Calendar, Tag } from 'lucide-react';
+import { X, Play, Image as ImageIcon, ExternalLink, Tag } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface Project {
@@ -20,6 +20,18 @@ const ProjectShowcase = memo(function ProjectShowcase() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const { t, language } = useLanguage();
 
+  // Handle scroll lock
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedProject]);
+
   const PROJECTS: Project[] = [
     {
       id: "project-1",
@@ -31,19 +43,22 @@ const ProjectShowcase = memo(function ProjectShowcase() {
       gallery: [],
       color: "bg-studio-red",
       videoUrl: "https://www.youtube.com/embed/bB6ZTFAWmcQ",
-      tags: ["3D Animation", "Creative Direction","Visual Storytelling"]
+      tags: ["3D Animation", "Creative Direction", "CGI", "Visual Storytelling"]
     }
   ];
 
   return (
-    <section id="projects" className="min-h-screen py-24 bg-studio-black overflow-hidden relative flex items-center">
-      <div className="container mx-auto px-6">
-        <div className="mb-12 md:mb-16">
-          <h2 className="text-4xl md:text-7xl font-bold tracking-tighter uppercase">{t.projects.title} <span className="text-studio-red">{t.projects.span}</span></h2>
+    <section id="projects" className="min-h-screen py-16 md:py-24 bg-studio-black overflow-hidden relative flex items-center">
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="mb-10 md:mb-16">
+          <h2 className="text-3xl md:text-7xl font-bold tracking-tighter uppercase whitespace-pre-line md:whitespace-normal">
+            {t.projects.title} {"\n"}
+            <span className="text-studio-red">{t.projects.span}</span>
+          </h2>
         </div>
 
         {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {PROJECTS.map((project, index) => (
             <motion.div
               key={project.id}
@@ -63,9 +78,9 @@ const ProjectShowcase = memo(function ProjectShowcase() {
                   decoding="async"
                 />
               </div>
-              <div className="mt-4">
+              <div className="mt-4 px-1">
                 <span className="text-[10px] text-studio-gold font-bold tracking-widest uppercase">{project.category}</span>
-                <h4 className="text-xl font-bold text-white uppercase tracking-tight mt-1">{project.title}</h4>
+                <h4 className="text-lg md:text-xl font-bold text-white uppercase tracking-tight mt-1">{project.title}</h4>
               </div>
             </motion.div>
           ))}
@@ -87,9 +102,9 @@ const ProjectShowcase = memo(function ProjectShowcase() {
                 {t.projects.viewAll}
               </span>
             </div>
-            <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <div className="mt-4 px-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
               <span className="text-[10px] text-studio-gold font-bold tracking-widest uppercase">{t.projects.discoverMore}</span>
-              <h4 className="text-xl font-bold text-white uppercase tracking-tight mt-1">{t.projects.fullPortfolio}</h4>
+              <h4 className="text-lg md:text-xl font-bold text-white uppercase tracking-tight mt-1">{t.projects.fullPortfolio}</h4>
             </div>
           </motion.div>
         </div>
@@ -99,6 +114,15 @@ const ProjectShowcase = memo(function ProjectShowcase() {
       <AnimatePresence>
         {selectedProject && (
           <div className="fixed inset-0 z-[1000] flex items-center justify-center p-0 md:p-8">
+            {/* Fixed Close Button for mobile/all devices */}
+            <button 
+              onClick={() => setSelectedProject(null)}
+              className="fixed top-8 right-8 md:top-12 md:right-12 z-[1100] p-4 bg-studio-red text-white rounded-full shadow-[0_0_25px_rgba(255,0,0,0.4)] hover:bg-studio-wine transition-all active:scale-90 border border-white/20 flex items-center justify-center cursor-pointer"
+              aria-label="Close modal"
+            >
+              <X size={24} />
+            </button>
+
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -109,26 +133,18 @@ const ProjectShowcase = memo(function ProjectShowcase() {
             
             <motion.div
               layoutId={selectedProject.id}
-              initial={{ opacity: 0, scale: 0.9, y: 100 }}
+              initial={{ opacity: 0, scale: 0.95, y: 50 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 50 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
               className="relative w-full max-w-6xl h-full md:h-auto md:max-h-[90vh] bg-neutral-900 md:rounded-3xl overflow-hidden shadow-2xl border-x md:border border-white/10 flex flex-col will-change-transform"
             >
-              {/* Close Button */}
-              <button 
-                onClick={() => setSelectedProject(null)}
-                className="absolute top-4 right-4 md:top-6 md:right-6 z-[60] p-3 bg-studio-black/50 hover:bg-studio-red text-white rounded-full transition-colors backdrop-blur-md"
-              >
-                <X size={20} className="md:w-6 md:h-6" />
-              </button>
-
               <div 
                 className="flex-1 overflow-y-auto custom-scrollbar overscroll-contain"
                 data-lenis-prevent
               >
                 {/* Modal Header/Hero */}
-                <div className="relative h-72 md:h-[50vh] w-full">
+                <div className="relative h-64 md:h-[45vh] w-full">
                   <img 
                     src={selectedProject.mainImage} 
                     alt={selectedProject.title}
@@ -137,32 +153,32 @@ const ProjectShowcase = memo(function ProjectShowcase() {
                     loading="lazy"
                     decoding="async"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/40 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/60 to-transparent" />
                   <div className="absolute bottom-6 left-6 md:bottom-10 md:left-12 pr-6">
                     <span className="text-studio-gold text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase mb-2 md:mb-4 block">{selectedProject.category} / {selectedProject.year}</span>
-                    <h2 className="text-3xl md:text-7xl font-bold text-white uppercase tracking-tighter leading-none">{selectedProject.title}</h2>
+                    <h2 className="text-2xl md:text-7xl font-bold text-white uppercase tracking-tighter leading-[1.1]">{selectedProject.title}</h2>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6 md:p-16">
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-20">
-                    <div className="lg:col-span-8">
-                       <div className="mb-12">
+                <div className="p-6 md:p-12 lg:p-16">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-20">
+                    <div className="lg:col-span-12 xl:col-span-8">
+                       <div className="mb-10 md:mb-12">
                          <h3 className="text-studio-gold text-[10px] md:text-xs font-bold tracking-widest uppercase mb-4 flex items-center gap-2 opacity-60">
                            <Tag size={12} /> {t.projects.modal.story}
                          </h3>
-                         <p className="text-neutral-200 text-lg md:text-xl font-light leading-relaxed whitespace-pre-line">
+                         <p className="text-neutral-200 text-base md:text-xl font-light leading-relaxed whitespace-pre-line">
                            {selectedProject.id === 'project-1' ? t.projects.project1Desc : selectedProject.description}
                          </p>
                        </div>
 
                        {selectedProject.videoUrl ? (
-                         <div>
+                         <div className="mb-10 xl:mb-0">
                            <h3 className="text-studio-gold text-[10px] md:text-xs font-bold tracking-widest uppercase mb-6 flex items-center gap-2 opacity-60">
                              <Play size={12} /> {t.projects.modal.video}
                            </h3>
-                           <div className="rounded-2xl overflow-hidden border border-white/10 aspect-video bg-white/5 shadow-2xl">
+                           <div className="rounded-xl md:rounded-2xl overflow-hidden border border-white/10 aspect-video bg-white/5 shadow-2xl">
                              <iframe 
                                src={selectedProject.videoUrl}
                                className="w-full h-full"
@@ -174,7 +190,7 @@ const ProjectShowcase = memo(function ProjectShowcase() {
                          </div>
                        ) : (
                          selectedProject.gallery.length > 0 && (
-                           <div>
+                           <div className="mb-10 xl:mb-0">
                              <h3 className="text-studio-gold text-[10px] md:text-xs font-bold tracking-widest uppercase mb-6 flex items-center gap-2 opacity-60">
                                <ImageIcon size={12} /> {t.projects.modal.video}
                              </h3>
@@ -201,12 +217,12 @@ const ProjectShowcase = memo(function ProjectShowcase() {
                        )}
                     </div>
 
-                    <div className="lg:col-span-4 lg:sticky lg:top-0 h-fit">
+                    <div className="lg:col-span-12 xl:col-span-4 h-fit">
                       <div className="p-6 md:p-8 rounded-2xl bg-white/[0.03] border border-white/5 backdrop-blur-sm">
-                        <div className="space-y-8">
+                        <div className="space-y-6 md:space-y-8">
                           <div>
                             <span className="text-[10px] text-neutral-500 uppercase font-bold tracking-[0.2em] block mb-2">{t.projects.modal.info}</span>
-                            <div className="space-y-4">
+                            <div className="space-y-3 md:space-y-4">
                               <div className="flex items-center justify-between py-2 border-b border-white/5">
                                 <span className="text-xs text-neutral-400">{t.projects.modal.year}</span>
                                 <span className="text-xs font-bold text-white">{selectedProject.year}</span>
@@ -220,9 +236,9 @@ const ProjectShowcase = memo(function ProjectShowcase() {
                           
                           <div>
                             <span className="text-[10px] text-neutral-500 uppercase font-bold tracking-[0.2em] block mb-4">{t.projects.modal.tags}</span>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap gap-1.5 md:gap-2">
                               {selectedProject.tags.map(tag => (
-                                <span key={tag} className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-[10px] text-neutral-300 uppercase tracking-wider">
+                                <span key={tag} className="px-2.5 py-1 bg-white/5 border border-white/10 rounded-lg text-[9px] md:text-[10px] text-neutral-300 uppercase tracking-wider">
                                   {tag}
                                 </span>
                               ))}
@@ -233,7 +249,7 @@ const ProjectShowcase = memo(function ProjectShowcase() {
                         <a 
                           href="#contact"
                           onClick={() => setSelectedProject(null)}
-                          className="w-full mt-10 py-5 bg-studio-red text-white font-bold uppercase tracking-widest text-[10px] hover:bg-studio-red/80 transition-all rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-studio-red/20"
+                          className="w-full mt-8 md:mt-10 py-4 md:py-5 bg-studio-red text-white font-bold uppercase tracking-widest text-[9px] md:text-[10px] hover:bg-studio-red/80 transition-all rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-studio-red/20"
                         >
                            {t.projects.modal.cta} <ExternalLink size={14} />
                         </a>
@@ -251,3 +267,4 @@ const ProjectShowcase = memo(function ProjectShowcase() {
 });
 
 export default ProjectShowcase;
+
