@@ -72,8 +72,8 @@ export default function ProjectShowcase() {
         {/* Section Header */}
         <div className="mb-10 md:mb-16">
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tighter uppercase leading-none">
-            DANH MỤC{' '}
-            <span className="text-studio-red">SÁNG TẠO</span>
+            DỰ ÁN{' '}
+            <span className="text-studio-red">CỦA VANGOC</span>
           </h2>
         </div>
 
