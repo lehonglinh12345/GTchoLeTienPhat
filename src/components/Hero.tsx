@@ -1,22 +1,13 @@
 import { memo, useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
-import { 
-  Play, 
-  Pause, 
-  Volume2, 
-  VolumeX, 
-  Maximize2,
-  Minimize2
-} from 'lucide-react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import { ArrowDown, Play, Pause, ExternalLink } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Hero = memo(function Hero() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const fullscreenRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const { scrollY } = useScroll();
@@ -50,30 +41,31 @@ const Hero = memo(function Hero() {
           style={{ y: useTransform(scrollY, [0, 500], [0, 150]) }}
           className="absolute inset-0 z-0 will-change-transform"
         >
-          <img 
-            src="/images/input_file_1.png" 
-            alt="Hero Background" 
-            className="w-full h-full object-cover opacity-40 brightness-[0.7]" 
-            referrerPolicy="no-referrer"
-            loading="eager"
-            decoding="async"
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover scale-[1.1] md:scale-105 will-change-transform"
+            poster="/images/input_file_1.png"
           />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-studio-black/20 via-studio-black/60 to-studio-black z-10" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-studio-red/20 blur-[150px] rounded-full animate-pulse z-1 will-change-transform" />
-        <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-studio-red/10 blur-[180px] rounded-full animate-pulse delay-700 z-1 will-change-transform" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-studio-red/20 blur-[150px] rounded-full animate-pulse z-1 transform-gpu will-change-opacity pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-studio-red/10 blur-[180px] rounded-full animate-pulse delay-700 z-1 transform-gpu will-change-opacity pointer-events-none" />
       </div>
 
       {/* Floating abstract elements */}
       <motion.div 
         style={{ y: y1 }}
-        className="absolute top-1/3 left-10 w-24 h-24 border border-studio-gold/20 rotate-45 rounded-lg backdrop-blur-sm z-10 will-change-transform"
+        className="absolute top-1/3 left-10 w-24 h-24 border border-studio-gold/20 rotate-45 rounded-lg backdrop-blur-sm z-10 transform-gpu will-change-transform pointer-events-none"
         animate={{ rotate: 405 }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       />
       <motion.div 
         style={{ y: y2 }}
-        className="absolute bottom-1/4 right-10 w-32 h-32 border border-studio-red/30 -rotate-12 rounded-full backdrop-blur-sm z-10 will-change-transform"
+        className="absolute bottom-1/4 right-10 w-32 h-32 border border-studio-red/30 -rotate-12 rounded-full backdrop-blur-sm z-10 transform-gpu will-change-transform pointer-events-none"
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       />
@@ -168,32 +160,30 @@ const Hero = memo(function Hero() {
               {/* Outer glow */}
               <div className="absolute -inset-4 bg-studio-red/10 xl:bg-studio-red/20 blur-3xl opacity-100 xl:opacity-0 xl:group-hover:opacity-100 transition-opacity duration-700" />
               
-              {/* VIDEO CARD */}
               <div 
                 ref={fullscreenRef}
-                className={`relative aspect-video sm:aspect-[4/5] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/20 xl:border-white/10 bg-studio-black shadow-2xl ${
-                  isFullscreen ? 'fixed inset-0 z-[9999] rounded-none aspect-auto' : ''
+                className={`relative aspect-video sm:aspect-video w-full max-w-full md:max-w-xl mx-auto rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/20 xl:border-white/10 bg-studio-black shadow-2xl ${
+                  isFullscreen ? 'fixed inset-0 z-[9999] rounded-none aspect-auto max-w-full' : ''
                 }`}
               >
-                <video 
-                  ref={videoRef}
-                  src="/trailer.mp4" 
-                  autoPlay 
-                  muted={isMuted} 
-                  loop 
-                  playsInline
-                  className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
-                />
+                {/* Facebook Embed */}
+                <iframe 
+                  src="https://www.facebook.com/plugins/video.php?href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1467677221505904&show_text=false&t=0&autoplay=1&muted=1" 
+                  className="w-full h-full border-none overflow-hidden transition-all duration-1000 group-hover:scale-105"
+                  scrolling="no" 
+                  frameBorder="0" 
+                  allowFullScreen={true} 
+                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                ></iframe>
                 
-                {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-studio-black/80 via-transparent to-transparent opacity-100 xl:opacity-60" />
+                {/* Overlay để tạo cảm giác điện ảnh */}
+                <div className="absolute inset-0 bg-gradient-to-t from-studio-black/80 via-studio-black/20 to-transparent pointer-events-none" />
                 
-                {/* SCANLINES - Hiệu ứng nhiễu sọc kiểu TV cũ / CRT TV effect line */}
-                <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]" />
+                {/* SCANLINES - Hiệu ứng nhiễu sọc CRT */}
+                <div className="absolute inset-0 pointer-events-none opacity-[0.05] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-10" />
 
-                {/* THÔNG TIN VIDEO GÓC DƯỚI - Bottom Info Section */}
-                <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 right-4 md:right-8">
-                  {/* Nhãn dự án - Category badge (e.g., Dự án chuyên sâu) */}
+                {/* THÔNG TIN VIDEO GÓC DƯỚI */}
+                <div className="absolute bottom-4 md:bottom-8 left-4 md:left-8 right-4 md:right-8 pointer-events-none z-20">
                   <div className="flex items-center gap-2 md:gap-3 mb-1 md:mb-2">
                     <div className="w-1 md:w-2 h-1 md:h-2 rounded-full bg-studio-red animate-pulse" />
                     <span className="text-[7px] md:text-[10px] text-white/50 uppercase font-bold tracking-widest">
@@ -201,69 +191,10 @@ const Hero = memo(function Hero() {
                     </span>
                   </div>
                   
-                  {/* Tiêu đề chính của Trailer - Main trailer title */}
-                  <h3 className="text-[10px] md:text-xl font-bold text-white uppercase tracking-tighter">
-                    TRAILER NHÀ CÓ GIỖ - 3COVANGOC STUDIO
+                  <h3 className="text-sm md:text-xl font-bold text-white uppercase tracking-tighter drop-shadow-lg">
+                    TRAILER NHÀ CÓ GIỖ
                   </h3>
                 </div>
-                
-                {/* Play Pause */}
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (videoRef.current) {
-                      if (isPlaying) {
-                        videoRef.current.pause();
-                      } else {
-                        videoRef.current.play();
-                      }
-                      setIsPlaying(!isPlaying);
-                    }
-                  }}
-                  className="absolute top-3 left-3 md:top-6 md:left-6 z-30 w-8 h-8 md:w-12 md:h-12 rounded-full bg-studio-black/60 md:bg-studio-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-studio-red transition-colors cursor-pointer"
-                >
-                  {isPlaying ? <Pause className="w-3.5 h-3.5 md:w-5 md:h-5" /> : <Play className="w-3.5 h-3.5 md:w-5 md:h-5 fill-current ml-0.5" />}
-                </motion.button>
-
-                {/* Volume */}
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsMuted(!isMuted);
-                  }}
-                  className="absolute top-3 right-3 md:top-6 md:right-6 z-30 w-8 h-8 md:w-12 md:h-12 rounded-full bg-studio-black/60 md:bg-studio-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-studio-red transition-colors cursor-pointer"
-                >
-                  {isMuted ? <VolumeX className="w-3.5 h-3.5 md:w-5 md:h-5" /> : <Volume2 className="w-3.5 h-3.5 md:w-5 md:h-5" />}
-                </motion.button>
-
-                {/* Fullscreen */}
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={async (e) => {
-                    e.stopPropagation();
-                    try {
-                      if (!document.fullscreenElement) {
-                        if (fullscreenRef.current) {
-                          await fullscreenRef.current.requestFullscreen();
-                          setIsFullscreen(true);
-                        }
-                      } else {
-                        await document.exitFullscreen();
-                        setIsFullscreen(false);
-                      }
-                    } catch (err) {
-                      console.error(err);
-                    }
-                  }}
-                  className="absolute bottom-3 right-3 md:bottom-6 md:right-6 z-30 w-8 h-8 md:w-12 md:h-12 rounded-full bg-studio-black/60 md:bg-studio-black/40 backdrop-blur-md border border-white/10 text-white flex items-center justify-center hover:bg-studio-red transition-colors cursor-pointer"
-                >
-                  {isFullscreen ? <Minimize2 className="w-3.5 h-3.5 md:w-5 md:h-5" /> : <Maximize2 className="w-3.5 h-3.5 md:w-5 md:h-5" />}
-                </motion.button>
               </div>
 
               {/* Decorative Corner Elements */}

@@ -2,6 +2,7 @@ import { memo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
 import { Menu, X } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { Language } from '../lib/translations';
 
@@ -9,7 +10,8 @@ const Navbar = memo(function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
-  const [projectModalOpen, setProjectModalOpen] = useState(false);
+  const location = useLocation();
+  const isHome = location.pathname === '/';
   const { language, setLanguage, t } = useLanguage();
 
   useEffect(() => {
@@ -41,21 +43,11 @@ const Navbar = memo(function Navbar() {
       if (el) observer.observe(el);
     });
 
-    // 3. Theo dõi class modal-open trên body để ẩn navbar khi project modal mở
-    const mutationObserver = new MutationObserver(() => {
-      setProjectModalOpen(document.body.classList.contains('modal-open'));
-    });
-    mutationObserver.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class'],
-    });
-
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
       observer.disconnect();
-      mutationObserver.disconnect();
     };
   }, []);
 
@@ -74,10 +66,7 @@ const Navbar = memo(function Navbar() {
     { code: 'ja', label: 'JP' },
   ];
 
-  // Ẩn hoàn toàn trên mobile khi project modal đang mở
-  if (projectModalOpen) {
-    return null;
-  }
+
 
   return (
     <>
@@ -91,8 +80,8 @@ const Navbar = memo(function Navbar() {
         )}
       >
         <div className="flex items-center gap-4">
-          <a
-            href="#home"
+          <Link
+            to="/"
             className="relative w-14 h-14 shrink-0 group cursor-pointer"
           >
             <div className="absolute inset-0 rounded-full bg-studio-red/20 blur-2xl group-hover:bg-studio-red/40 transition-all duration-700" />
@@ -107,7 +96,7 @@ const Navbar = memo(function Navbar() {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
               <div className="absolute inset-0 bg-studio-red/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
-          </a>
+          </Link>
           <span className="text-xl font-bold tracking-widest uppercase text-white hidden lg:block">
             3covangoc Studio
           </span>
@@ -115,7 +104,7 @@ const Navbar = memo(function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-10">
-          {navLinks.map((link) => (
+          {isHome && navLinks.map((link) => (
             <a
               key={link.id}
               href={`#${link.id}`}
@@ -184,7 +173,7 @@ const Navbar = memo(function Navbar() {
             />
 
             <div className="flex flex-col items-center gap-5 relative z-10 w-full">
-              {navLinks.map((link, idx) => (
+              {isHome && navLinks.map((link, idx) => (
                 <motion.a
                   key={link.id}
                   href={`#${link.id}`}

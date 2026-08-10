@@ -3,19 +3,16 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import useSmoothScroll from './hooks/useSmoothScroll';
 import CustomCursor from './components/CustomCursor';
 import LoadingScreen from './components/LoadingScreen';
 import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import About from './components/About';
-import Services from './components/Services';
-import ProjectShowcase from './components/ProjectShowcase';
-import Team from './components/Team';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import { LanguageProvider } from './contexts/LanguageContext';
+
+import Home from './pages/Home';
+import ProjectDetail from './pages/ProjectDetail';
 
 export default function App() {
   // Initialize smooth scrolling
@@ -23,7 +20,8 @@ export default function App() {
 
   return (
     <LanguageProvider>
-      <main className="relative min-h-screen bg-studio-black selection:bg-studio-red selection:text-white">
+      <BrowserRouter>
+        <main className="relative min-h-screen bg-studio-black selection:bg-studio-red selection:text-white">
         {/* Global Background Image */}
         <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
           <img 
@@ -43,23 +41,19 @@ export default function App() {
         {/* UI Layers */}
         <Navbar />
         
-        <div id="content-wrap">
-          <Hero />
-          <About />
-          <Services />
-          <ProjectShowcase />
-          <Team />
-          <Contact />
-          <Footer />
-        </div>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/project/:id" element={<ProjectDetail />} />
+        </Routes>
 
         {/* Background Lighting Effects */}
-        <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0">
-          <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] bg-studio-red/10 blur-[120px] rounded-full" />
-          <div className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-studio-gold/5 blur-[100px] rounded-full" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-studio-red/5 blur-[150px] rounded-full" />
+        <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+          <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] bg-studio-red/20 blur-[120px] rounded-full mix-blend-screen animate-pulse transform-gpu will-change-opacity" style={{ animationDuration: '8s' }} />
+          <div className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-studio-gold/10 blur-[120px] rounded-full mix-blend-screen animate-pulse delay-1000 transform-gpu will-change-opacity" style={{ animationDuration: '12s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-studio-wine/15 blur-[150px] rounded-full mix-blend-screen animate-pulse delay-500 transform-gpu will-change-opacity" style={{ animationDuration: '10s' }} />
         </div>
-      </main>
+        </main>
+      </BrowserRouter>
     </LanguageProvider>
   );
 }

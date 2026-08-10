@@ -1,5 +1,6 @@
 import { memo } from 'react';
 import { motion } from 'motion/react';
+import { Instagram, MapPin, Phone, Mail } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Footer = memo(function Footer() {
