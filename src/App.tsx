@@ -48,9 +48,9 @@ export default function App() {
 
         {/* Background Lighting Effects */}
         <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 overflow-hidden">
-          <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] bg-studio-red/20 blur-[120px] rounded-full mix-blend-screen animate-pulse transform-gpu will-change-opacity" style={{ animationDuration: '8s' }} />
-          <div className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-studio-gold/10 blur-[120px] rounded-full mix-blend-screen animate-pulse delay-1000 transform-gpu will-change-opacity" style={{ animationDuration: '12s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-studio-wine/15 blur-[150px] rounded-full mix-blend-screen animate-pulse delay-500 transform-gpu will-change-opacity" style={{ animationDuration: '10s' }} />
+          <div className="absolute top-[-10%] left-[-5%] w-[600px] h-[600px] bg-studio-red/20 blur-[120px] rounded-full transform-gpu will-change-opacity opacity-80" />
+          <div className="absolute bottom-[-10%] right-[-5%] w-[500px] h-[500px] bg-studio-gold/10 blur-[120px] rounded-full transform-gpu will-change-opacity opacity-80" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-studio-wine/15 blur-[150px] rounded-full transform-gpu will-change-opacity opacity-80" />
         </div>
         </main>
       </BrowserRouter>

@@ -2,6 +2,19 @@ import { useEffect, useState } from 'react';
 import { motion, useMotionValue, useSpring } from 'motion/react';
 
 export default function CustomCursor() {
+  const [isTouchDevice, setIsTouchDevice] = useState(true);
+
+  useEffect(() => {
+    // Only enable custom cursor if device has a fine pointer (like a mouse)
+    setIsTouchDevice(window.matchMedia('(pointer: coarse)').matches);
+  }, []);
+
+  if (isTouchDevice) return null;
+
+  return <CursorImplementation />;
+}
+
+function CursorImplementation() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   

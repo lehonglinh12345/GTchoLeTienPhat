@@ -3,6 +3,16 @@ import Lenis from 'lenis';
 
 export default function useSmoothScroll() {
   useEffect(() => {
+    // Only initialize Lenis on non-touch devices for better mobile performance
+    const isTouchDevice = 
+      'ontouchstart' in window || 
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia('(pointer: coarse)').matches;
+
+    if (isTouchDevice) {
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

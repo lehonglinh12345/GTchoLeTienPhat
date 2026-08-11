@@ -41,19 +41,16 @@ const Hero = memo(function Hero() {
           style={{ y: useTransform(scrollY, [0, 500], [0, 150]) }}
           className="absolute inset-0 z-0 will-change-transform"
         >
-          <video
-            ref={videoRef}
-            autoPlay
-            loop
-            muted
-            playsInline
+          <img
+            src="/images/input_file_1.png"
+            alt="Hero Background"
             className="w-full h-full object-cover scale-[1.1] md:scale-105 will-change-transform"
-            poster="/images/input_file_1.png"
+            fetchPriority="high"
           />
         </motion.div>
         <div className="absolute inset-0 bg-gradient-to-b from-studio-black/20 via-studio-black/60 to-studio-black z-10" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-studio-red/20 blur-[150px] rounded-full animate-pulse z-1 transform-gpu will-change-opacity pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-studio-red/10 blur-[180px] rounded-full animate-pulse delay-700 z-1 transform-gpu will-change-opacity pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-studio-red/20 blur-[150px] rounded-full z-1 transform-gpu will-change-opacity pointer-events-none opacity-80" />
+        <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-studio-red/10 blur-[180px] rounded-full z-1 transform-gpu will-change-opacity pointer-events-none opacity-80" />
       </div>
 
       {/* Floating abstract elements */}
@@ -174,6 +171,7 @@ const Hero = memo(function Hero() {
                   frameBorder="0" 
                   allowFullScreen={true} 
                   allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  loading="lazy"
                 ></iframe>
                 
                 {/* Overlay để tạo cảm giác điện ảnh */}

@@ -56,6 +56,8 @@ export default function Team() {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   style={{ objectPosition: teamImages[index]?.position }}
                   referrerPolicy="no-referrer"
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-studio-black via-transparent to-transparent opacity-60" />
               </div>
