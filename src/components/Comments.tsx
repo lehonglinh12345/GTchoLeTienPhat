@@ -213,12 +213,8 @@ export default function Comments({ projectId }: { projectId: string }) {
 
   const fetchComments = async () => {
     try {
-      const url = `http://localhost:5000/api/comments/${projectId}${user ? `?userId=${user.id}` : ''}`;
-      const res = await fetch(url);
-      if (res.ok) {
-        const data = await res.json();
-        setComments(data);
-      }
+      // Mock empty comments initially
+      setComments([]);
     } catch (error) {
       console.error('Failed to fetch comments', error);
     } finally {
@@ -235,21 +231,26 @@ export default function Comments({ projectId }: { projectId: string }) {
     setSubmitting(true);
 
     try {
-      const res = await fetch('http://localhost:5000/api/comments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ projectId, userId: user.id, content, parentId })
-      });
-
-      if (res.ok) {
-        const newCommentObj = await res.json();
-        setComments(prev => [...prev, newCommentObj]);
-        if (!parentId) {
-          setNewComment('');
-        }
-        return true; // Return success status
-
+      // Mock creating comment locally
+      const newCommentObj: Comment = {
+        id: Date.now(),
+        content,
+        created_at: new Date().toISOString(),
+        parent_id: parentId,
+        is_edited: false,
+        user_id: user.id,
+        user_name: user.name || 'User',
+        user_avatar: user.avatar || null,
+        likes_count: 0,
+        dislikes_count: 0,
+        user_reaction: null
+      };
+      
+      setComments(prev => [...prev, newCommentObj]);
+      if (!parentId) {
+        setNewComment('');
       }
+      return true; // Return success status
     } catch (error) {
       console.error('Failed to post comment', error);
     } finally {
@@ -260,16 +261,8 @@ export default function Comments({ projectId }: { projectId: string }) {
   const handleUpdateComment = async (id: number, content: string) => {
     if (!content.trim()) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/comments/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user?.id, content })
-      });
-      if (res.ok) {
-        setComments(prev => prev.map(c => c.id === id ? { ...c, content, is_edited: true } : c));
-        return true; // Return success status
-      }
-
+      setComments(prev => prev.map(c => c.id === id ? { ...c, content, is_edited: true } : c));
+      return true; // Return success status
     } catch (error) {
       console.error('Failed to update comment', error);
     }
@@ -278,15 +271,8 @@ export default function Comments({ projectId }: { projectId: string }) {
   const handleDeleteComment = async (id: number) => {
     if (!window.confirm('Bạn có chắc chắn muốn xóa bình luận này?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/comments/${id}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user?.id })
-      });
-      if (res.ok) {
-        // Remove comment and its children
-        setComments(prev => prev.filter(c => c.id !== id && c.parent_id !== id));
-      }
+      // Remove comment and its children
+      setComments(prev => prev.filter(c => c.id !== id && c.parent_id !== id));
     } catch (error) {
       console.error('Failed to delete comment', error);
     }
@@ -317,17 +303,6 @@ export default function Comments({ projectId }: { projectId: string }) {
 
       return { ...c, user_reaction: newReaction, likes_count: likes, dislikes_count: dislikes };
     }));
-
-    try {
-      await fetch(`http://localhost:5000/api/comments/${id}/react`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user.id, type: newReaction })
-      });
-    } catch (error) {
-      console.error('Failed to react', error);
-      fetchComments(); // revert on fail
-    }
   };
 
   const parentComments = comments.filter(c => !c.parent_id).sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());

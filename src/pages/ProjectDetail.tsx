@@ -18,28 +18,16 @@ export default function ProjectDetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    fetch(`http://localhost:5000/api/projects/${id}`)
-      .then(res => res.json())
-      .then(data => {
-        if (!data.message) {
-          const p = {
-            ...data,
-            mainImage: data.main_image,
-            tags: typeof data.tags === 'string' ? JSON.parse(data.tags) : data.tags,
-            gallery: typeof data.gallery === 'string' ? JSON.parse(data.gallery) : data.gallery,
-            episodes: typeof data.episodes === 'string' ? JSON.parse(data.episodes) : data.episodes
-          };
-          setProject(p);
-          if (p.episodes && p.episodes.length > 0) {
-            setCurrentEpisode(p.episodes[0]);
-          }
+    import('../data/projects').then((module) => {
+      const foundProject = module.PROJECTS.find(p => p.id === id);
+      if (foundProject) {
+        setProject(foundProject);
+        if (foundProject.episodes && foundProject.episodes.length > 0) {
+          setCurrentEpisode(foundProject.episodes[0]);
         }
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error(err);
-        setLoading(false);
-      });
+      }
+      setLoading(false);
+    });
   }, [id]);
 
   if (loading) {

@@ -20,39 +20,29 @@ export default function AuthModal() {
     setLoading(true);
 
     try {
+      // Mock Admin Login
       if (isLogin && email === 'admin') {
-        const adminRes = await fetch('http://localhost:5000/api/admin/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: email, password })
-        });
-        const adminData = await adminRes.json();
-        if (adminRes.ok) {
-          localStorage.setItem('adminToken', adminData.token);
+        if (password === 'admin') {
+          localStorage.setItem('adminToken', 'mock-admin-token');
           setAuthModalOpen(false);
           window.location.href = '/admin';
           return;
         } else {
-          throw new Error(adminData.message || 'Đăng nhập Admin thất bại');
+          throw new Error('Đăng nhập Admin thất bại');
         }
       }
 
-      const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register';
-      const body = isLogin ? { email, password } : { email, password, name };
+      // Mock standard login/register
+      const mockUser = {
+        id: Date.now(),
+        email: email,
+        name: name || email.split('@')[0],
+        avatar: null
+      };
 
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong');
-      }
-
-      login(data.token, data.user);
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      login('mock-jwt-token', mockUser);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -64,18 +54,15 @@ export default function AuthModal() {
     try {
       const decoded: any = jwtDecode(credentialResponse.credential);
       
-      const response = await fetch('http://localhost:5000/api/auth/google', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(decoded),
-      });
+      // Mock Google Login using token data directly
+      const mockUser = {
+        id: Date.now(),
+        email: decoded.email,
+        name: decoded.name,
+        avatar: decoded.picture
+      };
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || 'Google login failed');
-      }
-
-      login(data.token, data.user);
+      login('mock-google-token', mockUser);
     } catch (err: any) {
       setError(err.message);
     }

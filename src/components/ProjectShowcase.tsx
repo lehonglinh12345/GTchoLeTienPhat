@@ -11,24 +11,11 @@ export default function ProjectShowcase() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/projects')
-      .then(res => res.json())
-      .then(data => {
-        // Parse JSON fields from DB
-        const parsedProjects = data.map((p: any) => ({
-          ...p,
-          mainImage: p.main_image,
-          tags: typeof p.tags === 'string' ? JSON.parse(p.tags) : p.tags,
-          gallery: typeof p.gallery === 'string' ? JSON.parse(p.gallery) : p.gallery,
-          episodes: typeof p.episodes === 'string' ? JSON.parse(p.episodes) : p.episodes
-        }));
-        setProjects(parsedProjects);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error('Error fetching projects:', err);
-        setLoading(false);
-      });
+    // Simulate API fetch delay if wanted, but for now just load directly
+    import('../data/projects').then((module) => {
+      setProjects(module.PROJECTS);
+      setLoading(false);
+    });
   }, []);
 
   return (
