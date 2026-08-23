@@ -13,8 +13,6 @@ const Hero = memo(function Hero() {
   const { scrollY } = useScroll();
   const { t } = useLanguage();
   
-  const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   // Detect ESC fullscreen exit
@@ -35,36 +33,38 @@ const Hero = memo(function Hero() {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
     >
-      {/* Background with image, texture and color */}
+      {/* Background with image, texture and color (Optimized) */}
       <div className="absolute inset-0 z-0 bg-[#0A0A0A]">
-        <motion.div 
-          style={{ y: useTransform(scrollY, [0, 500], [0, 150]) }}
-          className="absolute inset-0 z-0 will-change-transform"
-        >
+        {/* Removed expensive scroll transformation, using simple fixed or static positioning */}
+        <div className="absolute inset-0 z-0 will-change-transform">
           <img
             src="/images/input_file_1.png"
             alt="Hero Background"
-            className="w-full h-full object-cover scale-[1.1] md:scale-105 will-change-transform"
+            className="w-full h-full object-cover scale-[1.1] md:scale-105"
             fetchPriority="high"
           />
-        </motion.div>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-b from-studio-black/20 via-studio-black/60 to-studio-black z-10" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-studio-red/20 blur-[150px] rounded-full z-1 transform-gpu will-change-opacity pointer-events-none opacity-80" />
-        <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-studio-red/10 blur-[180px] rounded-full z-1 transform-gpu will-change-opacity pointer-events-none opacity-80" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[radial-gradient(circle,rgba(255,0,0,0.15)_0%,rgba(0,0,0,0)_70%)] rounded-full z-1 transform-gpu pointer-events-none hidden md:block" />
+        <div className="absolute bottom-1/4 right-1/4 w-[30rem] h-[30rem] bg-[radial-gradient(circle,rgba(255,0,0,0.08)_0%,rgba(0,0,0,0)_70%)] rounded-full z-1 transform-gpu pointer-events-none hidden md:block" />
       </div>
 
-      {/* Floating abstract elements */}
+      {/* Floating abstract elements (Simplified CSS animations instead of scroll linked) */}
       <motion.div 
-        style={{ y: y1 }}
-        className="absolute top-1/3 left-10 w-24 h-24 border border-studio-gold/20 rotate-45 rounded-lg backdrop-blur-sm z-10 transform-gpu will-change-transform pointer-events-none"
-        animate={{ rotate: 405 }}
+        className="absolute top-1/3 left-10 w-24 h-24 border border-studio-gold/20 rotate-45 rounded-lg md:backdrop-blur-sm z-10 pointer-events-none hidden md:block"
+        animate={{ 
+          rotate: 405,
+          y: [0, -20, 0]
+        }}
         transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
       />
       <motion.div 
-        style={{ y: y2 }}
-        className="absolute bottom-1/4 right-10 w-32 h-32 border border-studio-red/30 -rotate-12 rounded-full backdrop-blur-sm z-10 transform-gpu will-change-transform pointer-events-none"
-        animate={{ scale: [1, 1.1, 1] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-1/4 right-10 w-32 h-32 border border-studio-red/30 -rotate-12 rounded-full md:backdrop-blur-sm z-10 pointer-events-none hidden md:block"
+        animate={{ 
+          scale: [1, 1.05, 1],
+          y: [0, 20, 0]
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
       <div className="container mx-auto px-6 relative z-20">
@@ -154,12 +154,12 @@ const Hero = memo(function Hero() {
             className="col-span-12 xl:col-span-5 relative mt-8 xl:mt-0 max-w-[320px] sm:max-w-md mr-auto xl:mr-0 w-full will-change-transform"
           >
             <div className="relative group cursor-pointer">
-              {/* Outer glow */}
-              <div className="absolute -inset-4 bg-studio-red/10 xl:bg-studio-red/20 blur-3xl opacity-100 xl:opacity-0 xl:group-hover:opacity-100 transition-opacity duration-700" />
+              {/* Outer glow (Optimized with radial gradient) */}
+              <div className="absolute -inset-4 bg-[radial-gradient(circle,rgba(255,0,0,0.15)_0%,rgba(0,0,0,0)_70%)] opacity-100 xl:opacity-0 xl:group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
               
               <div 
                 ref={fullscreenRef}
-                className={`relative aspect-video sm:aspect-video w-full max-w-full md:max-w-xl mx-auto rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/20 xl:border-white/10 bg-studio-black shadow-2xl ${
+                className={`relative aspect-video sm:aspect-video w-full max-w-full md:max-w-xl mx-auto rounded-[1.5rem] md:rounded-[2rem] overflow-hidden border border-white/20 xl:border-white/10 bg-studio-black shadow-lg md:shadow-2xl ${
                   isFullscreen ? 'fixed inset-0 z-[9999] rounded-none aspect-auto max-w-full' : ''
                 }`}
               >
@@ -171,7 +171,6 @@ const Hero = memo(function Hero() {
                   frameBorder="0" 
                   allowFullScreen={true} 
                   allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                  loading="lazy"
                 ></iframe>
                 
                 {/* Overlay để tạo cảm giác điện ảnh */}

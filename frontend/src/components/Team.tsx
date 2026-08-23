@@ -1,5 +1,6 @@
 import { motion } from 'motion/react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { Facebook } from 'lucide-react';
 
 export default function Team() {
   const { t } = useLanguage();
@@ -8,14 +9,17 @@ export default function Team() {
     {
       image: '/images/lekimtho.png',
       position: 'center',
+      facebook: '',
     },
     {
       image: '/images/letienphat.png',
       position: 'top',
+      facebook: 'https://www.facebook.com/tien.phat.le.181361',
     },
     {
       image: '/images/trichibao.png',
       position: 'top',
+      facebook: 'https://www.facebook.com/TrinhChiBao2611',
     },
   ];
 
@@ -64,6 +68,16 @@ export default function Team() {
               <div className="text-center pb-4">
                 <h3 className="text-xl font-bold mb-1 group-hover:text-studio-gold transition-colors">{member.name}</h3>
                 <p className="text-white/40 text-sm uppercase tracking-widest">{member.role}</p>
+                {teamImages[index]?.facebook && (
+                  <a 
+                    href={teamImages[index].facebook} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="inline-flex items-center gap-2 mt-4 text-xs font-bold text-neutral-400 hover:text-[#1877F2] transition-colors"
+                  >
+                    <Facebook size={16} /> Facebook
+                  </a>
+                )}
               </div>
             </motion.div>
           ))}

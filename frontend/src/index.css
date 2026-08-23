@@ -130,7 +130,5 @@
 
 /* Hide default cursor on desktop */
 @media (min-width: 1024px) {
-  body, a, button, [role="button"], select, input, textarea {
-    cursor: none !important;
-  }
+  /* Cursor has been restored to default */
 }

@@ -2,21 +2,53 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { ArrowLeft, PlayCircle, Clock, Lock } from 'lucide-react';
-import { PROJECTS, Episode } from '../data/projects';
 import { useLanguage } from '../contexts/LanguageContext';
+import { Project, Episode } from '../data/projects';
 import { cn } from '../lib/utils';
+import Comments from '../components/Comments';
 
 export default function ProjectDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useLanguage();
   
-  const project = PROJECTS.find(p => p.id === id);
-  const [currentEpisode, setCurrentEpisode] = useState<Episode | null>(project?.episodes?.[0] || null);
+  const [project, setProject] = useState<Project | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [currentEpisode, setCurrentEpisode] = useState<Episode | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    fetch(`http://localhost:5000/api/projects/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!data.message) {
+          const p = {
+            ...data,
+            mainImage: data.main_image,
+            tags: typeof data.tags === 'string' ? JSON.parse(data.tags) : data.tags,
+            gallery: typeof data.gallery === 'string' ? JSON.parse(data.gallery) : data.gallery,
+            episodes: typeof data.episodes === 'string' ? JSON.parse(data.episodes) : data.episodes
+          };
+          setProject(p);
+          if (p.episodes && p.episodes.length > 0) {
+            setCurrentEpisode(p.episodes[0]);
+          }
+        }
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error(err);
+        setLoading(false);
+      });
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#0c0c0c]">
+        <div className="text-center text-white/50">Đang tải dự án...</div>
+      </div>
+    );
+  }
 
   if (!project) {
     return (
@@ -111,6 +143,9 @@ export default function ProjectDetail() {
                 {project.description}
               </p>
             </motion.div>
+
+            {/* Comments Section */}
+            <Comments projectId={project.id} />
           </div>
 
           {/* SIDEBAR (RIGHT) - Episodes */}

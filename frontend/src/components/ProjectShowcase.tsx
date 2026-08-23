@@ -1,11 +1,35 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
-import { PROJECTS } from '../data/projects';
+import { Project } from '../data/projects';
 
 export default function ProjectShowcase() {
   const { t } = useLanguage();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('http://localhost:5000/api/projects')
+      .then(res => res.json())
+      .then(data => {
+        // Parse JSON fields from DB
+        const parsedProjects = data.map((p: any) => ({
+          ...p,
+          mainImage: p.main_image,
+          tags: typeof p.tags === 'string' ? JSON.parse(p.tags) : p.tags,
+          gallery: typeof p.gallery === 'string' ? JSON.parse(p.gallery) : p.gallery,
+          episodes: typeof p.episodes === 'string' ? JSON.parse(p.episodes) : p.episodes
+        }));
+        setProjects(parsedProjects);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching projects:', err);
+        setLoading(false);
+      });
+  }, []);
 
   return (
     <section id="projects" className="min-h-screen py-16 md:py-28 bg-studio-black overflow-hidden relative">
@@ -31,7 +55,9 @@ export default function ProjectShowcase() {
 
         {/* Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
-          {PROJECTS.map((project, index) => (
+          {loading ? (
+            <div className="col-span-full text-center text-white/50 py-20">Đang tải dự án...</div>
+          ) : projects.map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 40 }}

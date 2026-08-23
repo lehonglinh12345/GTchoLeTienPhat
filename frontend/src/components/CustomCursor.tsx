@@ -37,7 +37,8 @@ function CursorImplementation() {
       const target = e.target as HTMLElement;
       if (target) {
         const computedCursor = window.getComputedStyle(target).cursor;
-        setIsPointer(computedCursor === 'pointer' || target.tagName === 'A' || target.tagName === 'BUTTON');
+        const newIsPointer = computedCursor === 'pointer' || target.tagName === 'A' || target.tagName === 'BUTTON';
+        setIsPointer(prev => prev !== newIsPointer ? newIsPointer : prev);
       }
     };
 

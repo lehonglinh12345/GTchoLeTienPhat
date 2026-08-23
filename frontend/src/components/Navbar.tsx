@@ -1,9 +1,10 @@
 import { memo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, User, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useAuth } from '../contexts/AuthContext';
 import { Language } from '../lib/translations';
 
 const Navbar = memo(function Navbar() {
@@ -13,6 +14,7 @@ const Navbar = memo(function Navbar() {
   const location = useLocation();
   const isHome = location.pathname === '/';
   const { language, setLanguage, t } = useLanguage();
+  const { user, setAuthModalOpen, logout, setLogoutModalOpen } = useAuth();
 
   useEffect(() => {
     // 1. Detect scrolled state for background transition
@@ -20,6 +22,12 @@ const Navbar = memo(function Navbar() {
       const isScrolled = window.scrollY > 50;
       setScrolled((prev) => (prev !== isScrolled ? isScrolled : prev));
     };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (location.pathname !== '/') return;
 
     // 2. Detect active section using IntersectionObserver
     const sections = ['home', 'about', 'services', 'projects', 'team', 'contact'];
@@ -38,18 +46,33 @@ const Navbar = memo(function Navbar() {
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Check periodically if elements are in DOM (because of lazy loading)
+    const interval = setInterval(() => {
+      let allObserved = true;
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          if (!el.hasAttribute('data-observed')) {
+            observer.observe(el);
+            el.setAttribute('data-observed', 'true');
+          }
+        } else {
+          allObserved = false;
+        }
+      });
+      if (allObserved) clearInterval(interval);
+    }, 300);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      clearInterval(interval);
       observer.disconnect();
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.removeAttribute('data-observed');
+      });
     };
-  }, []);
+  }, [location.pathname]);
 
   const navLinks = [
     { name: t.nav.home, id: 'home' },
@@ -76,12 +99,13 @@ const Navbar = memo(function Navbar() {
         transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
         className={cn(
           "fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 px-6 lg:px-12 flex justify-between items-center will-change-transform",
-          scrolled || isOpen ? "bg-studio-black/80 backdrop-blur-md py-4 border-b border-white/5" : "bg-transparent shadow-none"
+          scrolled || isOpen ? "bg-studio-black/90 md:bg-studio-black/80 md:backdrop-blur-md py-4 border-b border-white/5" : "bg-transparent shadow-none"
         )}
       >
         <div className="flex items-center gap-4">
           <Link
             to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="relative w-14 h-14 shrink-0 group cursor-pointer"
           >
             <div className="absolute inset-0 rounded-full bg-studio-red/20 blur-2xl group-hover:bg-studio-red/40 transition-all duration-700" />
@@ -147,6 +171,38 @@ const Navbar = memo(function Navbar() {
             ))}
           </div>
 
+          {/* Auth Button */}
+          {user ? (
+            <div className="flex items-center gap-3 bg-white/5 rounded-full p-1 pr-4 border border-white/10 hidden md:flex">
+              <Link to="/profile" className="w-8 h-8 rounded-full overflow-hidden bg-white/10 shrink-0 cursor-pointer hover:ring-2 hover:ring-studio-red transition-all">
+                {user.avatar ? (
+                  <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <User size={14} className="text-white/50" />
+                  </div>
+                )}
+              </Link>
+              <Link to="/profile" className="text-[10px] font-bold text-white uppercase tracking-wider hidden lg:block hover:text-studio-red transition-colors">
+                {user.name.split(' ')[0]}
+              </Link>
+              <button
+                onClick={() => setLogoutModalOpen(true)}
+                className="text-white/40 hover:text-studio-red transition-colors ml-1"
+                title="Đăng xuất"
+              >
+                <LogOut size={14} />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setAuthModalOpen(true)}
+              className="px-4 py-2 bg-studio-red text-white text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-colors hidden md:block"
+            >
+              Đăng nhập
+            </button>
+          )}
+
           {/* Mobile Menu Toggle */}
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -165,12 +221,9 @@ const Navbar = memo(function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.4, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-[49] bg-studio-black/85 backdrop-blur-2xl flex flex-col items-center justify-center pt-20 px-6 md:hidden"
+            className="fixed inset-0 z-[49] bg-studio-black/98 flex flex-col items-center justify-center pt-20 px-6 md:hidden"
           >
-            <div
-              className="absolute inset-0 opacity-[0.03] pointer-events-none"
-              style={{ backgroundImage: "url('data:image/svg+xml,%3Csvg viewBox=\"0 0 200 200\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cfilter id=\"noiseFilter\"%3E%3CfeTurbulence type=\"fractalNoise\" baseFrequency=\"0.65\" numOctaves=\"3\" stitchTiles=\"stitch\"/%3E%3C/filter%3E%3Crect width=\"100%25\" height=\"100%25\" filter=\"url(%23noiseFilter)\"/%3E%3C/svg%3E')" }}
-            />
+            {/* Removed SVG noise filter for better mobile performance */}
 
             <div className="flex flex-col items-center gap-5 relative z-10 w-full">
               {isHome && navLinks.map((link, idx) => (
@@ -189,6 +242,43 @@ const Navbar = memo(function Navbar() {
                   {link.name}
                 </motion.a>
               ))}
+
+              {/* Mobile Auth */}
+              {user ? (
+                <div className="mt-8 flex flex-col items-center gap-4">
+                  <Link to="/profile" onClick={() => setIsOpen(false)} className="w-12 h-12 rounded-full overflow-hidden bg-white/10 shrink-0 border border-white/20 hover:border-studio-red transition-colors">
+                    {user.avatar ? (
+                      <img src={user.avatar} alt={user.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <User size={20} className="text-white/50" />
+                      </div>
+                    )}
+                  </Link>
+                  <Link to="/profile" onClick={() => setIsOpen(false)} className="text-xs font-bold text-white uppercase tracking-wider hover:text-studio-red transition-colors">
+                    {user.name}
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setLogoutModalOpen(true);
+                      setIsOpen(false);
+                    }}
+                    className="px-6 py-2 border border-white/20 text-white text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-studio-red hover:border-studio-red transition-colors mt-2"
+                  >
+                    Đăng xuất
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setAuthModalOpen(true);
+                    setIsOpen(false);
+                  }}
+                  className="mt-8 px-8 py-3 bg-studio-red text-white text-xs font-bold uppercase tracking-widest rounded-full hover:bg-white hover:text-black transition-colors"
+                >
+                  Đăng nhập
+                </button>
+              )}
             </div>
 
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2 text-white/20 text-xs tracking-widest font-bold uppercase">
